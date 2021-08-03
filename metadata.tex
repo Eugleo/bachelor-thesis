@@ -8,12 +8,12 @@
 
 %%% Configuration of the title page %%%
 
-\def\ThesisTitleStyle{mff} % MFF style
+% \def\ThesisTitleStyle{mff} % MFF style
 %\def\ThesisTitleStyle{cuni} % uncomment for old-style with cuni.cz logo
-%\def\ThesisTitleStyle{natur} % uncomment for nature faculty logo
+\def\ThesisTitleStyle{natur} % uncomment for nature faculty logo
 
-\def\UKFaculty{Faculty of Mathematics and Physics}
-%\def\UKFaculty{Faculty of Science}
+% \def\UKFaculty{Faculty of Mathematics and Physics}
+\def\UKFaculty{Faculty of Science}
 
 \def\UKName{Charles University in Prague} % this is not used in the "mff" style
 
@@ -36,39 +36,39 @@
 %%% Fill in your details %%%
 
 % (Note: \xxx is a "ToDo label" which makes the unfilled visible. Remove it.)
-\def\ThesisTitle{\xxx{Thesis title}}
-\def\ThesisAuthor{\xxx{Your Name Surname}}
-\def\YearSubmitted{\xxx{YEAR}}
+\def\ThesisTitle{Differential discovery of protein features using tandem mass spectrometer}
+\def\ThesisAuthor{Evžen Wybitul}
+\def\YearSubmitted{2021}
 
 % department assigned to the thesis
-\def\Department{\xxx{Name of the department}}
+\def\Department{\xxx{Department of Bruteforcing Hard Problems}}
 % Is it a department (katedra), or an institute (ústav)?
-\def\DeptType{\xxx{Department}}
+\def\DeptType{Department}
 
-\def\Supervisor{\xxx{Supername Supersurname}}
-\def\SupervisorsDepartment{\xxx{department}}
+\def\Supervisor{Miroslav Kratochvíl}
+\def\SupervisorsDepartment{\xxx{Noxemchâteau Apartment}}
 
 % Study programme and specialization
-\def\StudyProgramme{\xxx{study programme}}
-\def\StudyBranch{\xxx{study branch}}
+\def\StudyProgramme{Bioinformatics}
+\def\StudyBranch{Bioinformatics}
 
 \def\Dedication{%
-Dedication. \xxx{It is nice to say thanks to supervisors, friends, family, book authors and food providers.}
+  Dedication. \xxx{It is nice to say thanks to supervisors, friends, family, book authors and food providers.}
 }
 
 \def\AbstractEN{%
-\xxx{Abstracts are an abstract form of art. Use the most precise, shortest sentences that state what problem the thesis addresses, how it is approached, pinpoint the exact result achieved, and describe the applications and significance of the results. Highlight anything novel that was discovered or improved by the thesis. Maximum length is 200 words, but try to fit into 120. Abstracts are often used for deciding if a reviewer will be suitable for the thesis; a well-written abstract thus increases the probability of getting a reviewer who will like the thesis.}
-% ABSTRACT IS NOT A COPY OF YOUR THESIS ASSIGNMENT!
+  \xxx{Abstracts are an abstract form of art. Use the most precise, shortest sentences that state what problem the thesis addresses, how it is approached, pinpoint the exact result achieved, and describe the applications and significance of the results. Highlight anything novel that was discovered or improved by the thesis. Maximum length is 200 words, but try to fit into 120. Abstracts are often used for deciding if a reviewer will be suitable for the thesis; a well-written abstract thus increases the probability of getting a reviewer who will like the thesis.}
+  % ABSTRACT IS NOT A COPY OF YOUR THESIS ASSIGNMENT!
 }
 
 \def\AbstractCS{%
-\xxx{You will need to submit both Czech and English abstract to the SIS, no matter what language you use in the thesis. If writing in English, translate the contents of \texttt{\textbackslash{}AbstractEN} into this field. In case you do not speak czech, your supervisor should be able to help you with the translation.}
+  \xxx{You will need to submit both Czech and English abstract to the SIS, no matter what language you use in the thesis. If writing in English, translate the contents of \texttt{\textbackslash{}AbstractEN} into this field. In case you do not speak czech, your supervisor should be able to help you with the translation.}
 }
 
 % 3 to 5 keywords (recommended), each enclosed in curly braces.
 % Keywords are useful for indexing and searching for the theses by topic.
 \def\Keywords{%
-\xxx{{key} {words}}
+  \xxx{{key} {words}}
 }
 
 % If your abstracts are long and do not fit in the infopage, you can make the
@@ -79,15 +79,15 @@ Dedication. \xxx{It is nice to say thanks to supervisors, friends, family, book 
 %\def\InfoPageFont{\small}  %uncomment to decrease font size
 
 \ifEN\relax\else
-% If you are writing a czech thesis, you additionally need to fill in the
-% english translation of the metadata here!
-\def\ThesisTitleEN{\xxx{Thesis title in English}}
-\def\DepartmentEN{\xxx{Name of the department in English}}
-\def\DeptTypeEN{\xxx{Department}}
-\def\SupervisorsDepartmentEN{\xxx{Superdepartment}}
-\def\StudyProgrammeEN{\xxx{study programme}}
-\def\StudyBranchEN{\xxx{study branch}}
-\def\KeywordsEN{%
-\xxx{{key} {words}}
-}
+  % If you are writing a czech thesis, you additionally need to fill in the
+  % english translation of the metadata here!
+  \def\ThesisTitleEN{\xxx{Thesis title in English}}
+  \def\DepartmentEN{\xxx{Name of the department in English}}
+  \def\DeptTypeEN{\xxx{Department}}
+  \def\SupervisorsDepartmentEN{\xxx{Superdepartment}}
+  \def\StudyProgrammeEN{\xxx{study programme}}
+  \def\StudyBranchEN{\xxx{study branch}}
+  \def\KeywordsEN{%
+    \xxx{{key} {words}}
+  }
 \fi

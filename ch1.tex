@@ -1,52 +1,224 @@
-\chapter{Important first chapter}
-\label{chap:refs}
+\chapter{Tandem mass spectrometry for protein analysis}\label{chap:msms}
 
-First chapter usually builds the theoretical background necessary for readers to understand the rest of the thesis. You should summarize and reference a lot of existing literature and research.
+Proteins are amino acid biopolymers that take part in most natural processes in living organisms. Among other things, they are vital for cell growth, reproduction, metabolism, and movement. [citace] Proteins are also a frequent target of medicine, because they play a key role in most diseases.
 
-You should use the standard \emph{citations}\todo{Use \textbackslash{}emph command like this, to highlight the first occurrence of an important word or term. Reader will notice it, and hopefully remember the importance.}.
+Protein function is highly dependent on its 3D structure [citace], and as was shown by Anfinsen [citace], the information about the structure is in turn encoded in the sequence of the protein.
 
-\begin{description}
-\item[Obtaining bibTeX citation] Go to Google Scholar\footnote{\url{https://scholar.google.com}}\todo{This footnote is an acceptable way to `cite' webpages or URLs. Documents without proper titles, authors and publishers generally do not form citations. For this reason, avoid citations of wikipedia pages.}, find the relevant literature, click the tiny double-quote button below the link, and copy the bibTeX entry.
-\item[Saving the citation] Insert the bibTeX entry to the file \texttt{refs.bib}. On the first line of the entry you should see the short reference name --- from Scholar, it usually looks like \texttt{author2015title} --- you will use that to refer to the citation.
-\item[Using the citation] Use the \verb|\cite| command to typeset the citation number correctly in the text; a long citation description will be automaticaly added to the bibliography at the end of the thesis. Always use a non-breakable space before the citing parenthesis to avoid unacceptable line breaks:
-\begin{Verbatim}
-Trees utilize gravity to invade ye
-noble sires~\cite{newton1666apple}.
-\end{Verbatim}
-\item[Why should I bother with citations at all?] For two main reasons:
-\begin{itemize}
-\item You do not have to explain everything in the thesis; instead you send the reader to refer to details in some other literature. Use citations to simplify the detailed explanations.
-\item If you describe something that already exists without using a citation, the reviewer may think that you \emph{claim} to have invented it. Expectably, he will demand academic correctness, and, from your perspective, being accused of plagiarism is not a good starting point for a successful defense. Use citations to identify the people who invented the ideas that you build upon.
-\end{itemize}
-\item[How many citations should I use?]
-Cite any non-trivial building block or assumption that you use, if it is published in the literature. You do not have to cite trivia, such as the basic definitions taught in the introductory courses.
+Protein folding is driven by natural biophysical forces which makes it hard to properly recreate \emph{in silico}, especially when there is no homologous protein with known structure [citace]; this problem is called \emph{de novo} folding.
 
-The rule of thumb is that you should read, understand and briefly review at least around 4 scientific papers. A thesis that contains less than 3 sound citations will spark doubt in reviewers.
-\end{description}
+Techniques for \emph{de novo} folding rely mostly on molecular dynamic simulations. These approaches are often very performance-intensive (?), because they are effectively optimising a complicated scoring function a huge multidimensional problem space. [citace] Any information we have about the structure can be thus very heplful in reducing the problem space when supplied to the algorithm, making the computations faster and more accurate. One type of such information are the positions of disulphide bridges.
 
-There are several main commands for inserting citations, used as follows:
-\begin{itemize}
-\item \citet{knuth1979tex} described a great system for typesetting theses.
-\item We are typesetting this thesis with \LaTeX, which is based on \TeX{} and METAFONT~\cite{knuth1979tex}.
-\item \TeX{} was expanded to \LaTeX{} by \citet{lamport1994latex}, hence the name.
-\item Revered are the authors of these systems!~\cite{knuth1979tex,lamport1994latex}
-\end{itemize}
+Disulphide bridges (DB) in proteins can be formed between the sulfhydryl groups of two cysteines during a thiol–disulfide exchange reaction catalyzed by thioredoxin [citace] In vivo they are oftentimes essential to correct protein folding, because they stabilise the final structure [citace] The knowledge of DB positions can be used, among other things, to constrain the molecular dynamic simulations, as mentioned earlier. In addition, the knowledge of which cysteines do \emph{not} partake in a DB is important, too.
 
-\section{Some extra assorted hints before you start writing English}
+Non-interlinked cysteines have an important pH-regulating function within proteins [citace] (a něco dalšího ještě?). Consequently, cysteines are scarce compared to other amino acids [citace], but they are usually very well conserved during evolution [citace].
 
-Strictly adhere to the English word order rules. The sentences follow a fixed structure with subject followed by a verb and an object (in this order). Exceptions to this rule must be handled specially, and usually separated by commas.
+There are many methods aiming to determine the positions of DBs, on of them is tandem mass spectrometry combined with liquid chromatography (LC-MSMS). LC-MSMS is a popular general analysis technique, often used in proteomics for its accuracy and relative straightforwardness of the experiments (?) [citace].
 
-Mind the rules for placing commas:
-\begin{itemize}
-\item Use the \emph{Oxford comma} before `and' and `or' at the end of a longer, comma-separated list of items. Certainly use it to disambiguate any possible mixtures of conjunctions: \textit{`The car is available in red, red and green, and green versions.'}
-\item Do not use the comma before subordinate clauses that begin with `that' (like this one). English does not use subordinate clauses as often as Slavic languages because the lack of a suitable word inflection method makes them hard to understand. In scientific English, try to avoid them as much as possible. Ask doubtfully whether each `which' and `when' is necessary --- most of these helper conjunctions can be removed by converting the clause to non-subordinate.
+In LC-MSMS, the protein is eventually fragmented to smaller charged peptides whose mass to charge ratio (\(m/z\)) is measured with atomic precision. The whole experiment can be designed in a way that the DBs are preserved which results in the occurence of \emph{bridgetides} with specific \(m/z\) fragmentation signatures. Computational analysis can help us discover these fragmentation spectra and determine the original positions of the DBs in the protein. The first step in a LC-MSMS protein analysis is sample preparation.
 
-As an usual example, \xxx{\textit{`The sentence, which I wrote, seemed ugly.'}} is perfectly bad; slightly improved by \xxx{\textit{`The sentence that I wrote seemed ugly.'}}, which can be easily reduced to \textit{`The sentence I wrote seemed ugly.'}. A final version with added storytelling value could say \textit{`I wrote a sentence but it seemed ugly.'}
-\item Consider placing extra commas around any parts of the sentence that break the usual word order, especially if they are longer than a single word.
-\end{itemize}
+  [TODO: Definice bridgetide]
 
-Do not write long sentences. One sentence should contain exactly one fact. Multiple facts should be grouped in a paragraph to communicate one coherent idea. Paragraphs are grouped in labeled sections for a sole purpose of making the navigation in the thesis easier. Do not use the headings as `names for paragraphs' --- the text should make perfect sense even if all headings are removed. If a section of your text contains one paragraph per heading, you might have wanted to write an explicit list instead.
 
-Every noun needs a determiner (`a', `the', `my', `some', \dots); the exceptions to this rule, such as non-adjectivized names and indeterminate plural, are relatively scarce. Without a determiner, a noun can be easily mistaken for something completely different, such as an adjective or a verb.
+\section{Sample preparation}
 
-Consult the books by \citet{glasman2010science} and \citet{sparling1989english} for more useful details.
+To prepare the protein for the analasis, it needs to be proteolyticaly cleaved; trypsin, and, to a lesser extent, pepsin, are popular choices. Trypsin is a serine protease with very high specificity which makes it very useful for mass spectrometry analyses, because the resulting peptides are predictable.
+
+Trypsin cleaves amino acid chains at the carboxyllic side of lysine and arginine, provided they are not followed by proline~\cite{olsen2004trypsin}. Lysine and arginine are both relatively abundant in most proteins which makes the tryptic digestion peptides --- or as we will call them, \emph{tryptides} --- reasonably sized for a mass spectrometry analysis~\cite{matthiesen2020trypticsize}. With that being said, the sample protein is not cleaved at every potential cleavage place; so called \emph{missed cleavages} do occur, and their frequency and position depend on neigbouring residues~\cite{gershon2014cleaved}, and experimental setup.
+
+  [TODO: přidat odstavec o redukci a alkylaci, a že my to spíše neděláme, letda pro srovnávací RAT vzorky]
+
+After digestion, the resulting peptides undergo separation in liquid chromatography.
+
+\section{Sample separation}
+
+In a general proteomic experiment, the signal from more abundant sample proteins may interfere with the other, less frequent proteins. To sidestep this problem, it has become routine to perform separation before the main MS experiment, separating the sample either on the protein level or the peptide level.
+
+One possible method for protein-level separation is two dimensional polyacrylamide gel electrophoresis, during which the proteins are split first by isoelectric focusing, and then by SDS gel electrophoresis~\cite{o1975high}. 2D-PAGE has very high resolution~\cite{klose1995two}. The proteins are usually digested in-gel after the separation, manually cut out, and then put into the mass spectrometer, causing the method to have relatively low throughput~\cite{patton2002two}, making it unfit for some scenarios.
+
+In our scenario with one protein per sample, separating on protein-level is not going to be useful; instead, peptide-level separation is preferred. A popular peptide-level separation method is liquid chromatography (LC). In a model MS-based proteomic LC experiment, the proteins are digested without prior separation, and the resulting peptides are separated on reverse-phase liquid chromatography column that is directly connected to a tandem mass spectrometer~\cite{washburn2001large}. Usually the number of different proteins in the sample is high, leading to a large amount of generated spectra and causing a need for automatic processing. This type of identifying sample proteins is sometimes called shotgun processing.
+
+Reverse-phase LC has two main constituents: a mobile liquid phase containing the peptides and a stationary solid phase which is usually a nonpolar column with \(\ce{C18}\) alkyl chains~\cite{chang1976high}. The mobile phase passes along the stationary phase, the elution time of each individual peptide depending on its hydrophobic interactions with the alkyls. The peptides are eluted with a polar mixture of water and organic solvent, such as acetonitrile~\cite{frohlich2006proteome}, the shortest and least hydrophilic eluting the earliest.
+
+
+\section{Tandem mass spectrometry}
+
+Mass spectrometry is an analytical technique with roots deep in the last century that has originally been used for studying small thermostable molecules. However, with the advancements in soft ionization allowing proteins and other biomolecules to be analysed as well~\cite{fenn1989electrospray}, mass spectrometry has become an indispesable tool in proteomics research~\cite{collins2003human}.
+
+In the context of proteomics, mass spectrometry experiments can be either single-stage or tandem. During single-stage experiments, the mass distribution of a polypeptide sample is determined. The more frequent of the two, tandem (MS/MS) mass spectrometry is used to learn about certain structural features of a protein, including sequence and post-translational modifications.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.9\linewidth]{img/msms-workflow.png}
+  \caption{An ordinary MS/MS workflow diagram. While the specific intrumentation details differ from spectrometer to spectrometer, the general structure of ionize \textrightarrow{} analyse \textrightarrow{} fragment \textrightarrow{} analyse is common to all of the MS/MS spectrometry experiments. Image taken from~\cite{domon2006mass}.}\label{fig:mass-spectrometry-workflow}
+\end{figure}
+
+Both the single-stage and MS/MS experiments begin similarly: the sample peptides are ionized, the ions travel through an electromagnetic field in an analyser and into a detector, whilst their mass-to-charge (\(m/z\)) is being calculated~\cite{gross2006mass}. In single-stage mass spectrometry, the experiment ends there, while in MS/MS, some of these \emph{precursors} are selected to undergo fragmentation in the collision cell, as shown in \Cref{fig:mass-spectrometry-workflow}. The resulting fragments are also analysed and their \(m/z\) values noted; the output of the MS/MS experiment are the precursor masses and their fragmentation spectra, an example of which can be seen one figure \Cref{fig:frag-spectrum}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\linewidth]{img/fragmentation-spectrum.png}
+  \caption{An annotated fragmentation spectrum of the precursor \emph{FESNFNTQATNRNTDGSTDYGILQINSR}}\label{fig:frag-spectrum}
+\end{figure}
+
+We will now discuss some specific approaches to the main phases of MS/MS analysis, putting the focus on those that are relevant for this thesis.
+
+  [TODO: Přidat něco o ppm a vyhodnocování, a jak je to pro nás hrozně důležité, když děláme ty můstky]
+
+\subsection{Sample ionization}
+
+Save a few specific exceptions, only charged compounds are detectable by the analyser and detector in mass spectrometer; that means we have to ionize our sample in order be able to analyse it.
+
+There are many sample ionization methods; one of the oldest is electron ionization~\cite{field2013electron}, in which the sample is first transferred to a gas phase and then bombarded with electrons. However, this method is unsuitable for large thermally unstable organic molecules, such as peptides; for proteomics work, the two most popular options are MALDI and ESI.\@
+
+Matrix-assisted laser desorption/ionization (MALDI) is a ionization technique oft used in proteomics~\cite{caprioli1997molecular, ross1997discrimination}. In MALDI, the sample is placed on a solid light-absorbing crystalline matrix and undergoes several short focused bursts of laser light with specific wavelenghts. The light is absorbed by the sample layer which causes sample evaporation and ionization~\cite{karas1985influence}. Unfortunately for our use case, the whole ionization process has to be done in a vacuum, making it impossible to directly connect the liquid chromatography column to the spectrometer.
+
+\subsubsection{Electrospray ionization}
+
+For proteomics experiments that make use of liquid chromatography, electrospray ionization (ESI) is the ionization method of choice. As ESI works under atmospheric pressure, the LC colon can be connected directly to the mass spectrometer, resulting in what is usually called an  ``online'' or ``hyphenated'' LC-MS system~\cite{opiteck1997comprehensive}.
+
+During ESI, a very fine capillary with a solution containing the sample peptides and charged ions is placed into a strong electrostatic field. Due to the influence of the field, the solution forcibly squirts out of the capillary, creating a mist of miniscule charged droplets. The solution slowly evaporates from the droplets, until eventually the repulsive electric forces inside the droplet overcome its surface tension and the droplet splits into yet smaller droplets~\cite{rayleigh1882xx}. This evaporating and splitting process repeats itself, until we are left with isolated sample ions in the gas phase~\cite{dole1968molecular,dole1968gas,fenn1989electrospray, fenn1990electrospray}.
+
+For our work, two properties of ESI are important. First, ESI is a notably soft ionization technique, owing among other things to the fact it works in atmospheric pressure, which means that the sample undergoes very little to no fragmentation during the ionization~\cite{griffiths2001electrospray}. That means that the tryptides traveling to the analyser will be mostly left intact, simplyfying the subsequent analysis. The second property has to do with the typical charge of ions produced by ESI\@. Ions generated by ESI are often multiply charged~\cite{felitsyn2002origin}, bringing their \(m/z\) value down and enabling us to analyse peptides with a higher mass in an ordinary mass spectrometer setting.
+
+\subsection{Mass analysers}
+
+A mass analyser, together with the help of a detector, measures the \(m/z\) ratio of a sample compound. The many existing mass analysers differ in their performance standards, the principle of function, and the sample characterstics they require to function properly.
+
+One of the oldest mass analysers still in use is the time-of-flight (TOF) analyser~\cite{stephens1946pulsed}. It is also one of the simplest to manufacture. In TOF analysers, sample ions are accelerated with an electric field to make them travel along a path with known length. The ions with lower \(m/z\) values will arrive sooner than the ones with higher \(m/z\) values, as long as all of them are dispersed at a similar-enough point in time. Due to this requirement, TOF analysers are best suited for pulsed ionization techniques such as MALDI\@. In addition to having a relatively simple construction, TOF analysers have an excellent sensitivity and, at least in theory, their \(m/z\) range is unlimited~\cite{fuerstenau1995molecular}.
+
+The linear quadrupole doubles as an analyser and also as a collision cell. As the name suggest, a linear quadrupole consist of four linear rods which are placed parallel to each other and arranged in a square shape, see \Cref*{fig:quadrupole}. A pair of rods sitting in diagonally opposite corners has the same polarity. However, the pairs periodically switch the polarity. An ion travelling along the rods is periodically repelled and attracted to each of the rods, its precise trajectory depending on its \(m/z\) value~\cite{paul1990electromagnetic}. In this way, ions with specific \(m/z\) values can pass through the quadrupole into a detector~\cite{paul1953neues}, while others follow an unstable trajectory and crash into one of the poles or the wall of the quadrupole.
+
+Quadrupoles can also trap specific ions inside for prolonged period of time instead of making them simply pass through. So called linear ion traps are sometimes used as a ``staging area'' for other analysers, trapping ions and releasing them by clusters based on their \(m/z\) values further into the pipeline~\cite{mao2003h}. Another possibility is to use quadrupoles as collision cells for precursor fragmentation. For a long time, the state of the art in tandem mass spectrometry was the tripple quadrupole spectrometer~\cite{yost1978selected}; it has only lately become dethroned on the basis of accuracy by methods based on Fourier transform.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.4\linewidth]{img/quadrupole.png}
+  \caption{A quadrupole with two highlighted classes of ion trajectories. Thanks to its \(m/z\) value, the ion with green trajectory passes through the quadrupole and is ultimately detected, while the one with the red trajectory is filtered out. Image taken from~\cite{2021Mass}.}\label{fig:quadrupole}
+\end{figure}
+
+\subsubsection{Mass spectrometry based on Fourier transform}
+
+The basis of the older of the two Fourier transform based methods, Fourier transform ion cyclotron resonance (FT-ICR), has been cocieved in 1930s by research on ion cyclotron resonance. As \cites{lawrence1932production} have shown, an ion particle in a magnetic and an electric field can be accelerated by periodically alternating the polarity of the surrounding electric field, and this in turn increases the radius upon which the particle circulates around the center of the chamber. Once the radius reaches a limit size, the particle can be detected crashing to the wall of the chamber. Later, the \(m/z\) values of the ions became measurable even without them crashing into the detector, thanks to Fourier transform that made it possible to decode the signals of passing circulating ions and calculate the \(m/z\) values from the frequencies and amplitudes~\cite{comisarow1974fourier}. This also made the measurement faster, as many ions with wildly different \(m/z\) values could be measured in parallel. Further improvements increased the mass accuracy and resolution beyond what is attainable by quadrupole analysers~\cite{amster1996fourier, easterling1999routine}.
+
+For our work, the most important analyser type is the Orbitrap~\cite{hu2005orbitrap}. It achieves similar accuracy, resolving power and dynamic range to FT-ICR, but does not require an expensive-to-run supraconducting magnet to do so. In orbitrap the ions simultaneously cycle around the centre and oscillate along the z-axis, as is illustrated on \Cref*{fig:orbitrap}. This oscillation induces a periodically changing electrical current in the detector that is converted to a \(m/z\) spectrum of the analyte with the help of FT\@.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.5\linewidth]{img/orbitrap.png}
+  \caption{An orbitrap mass analyser with a typical ion trajetrory highlighted. The ion circulates around the center while simultanously oscillating along the z-axis. Image taken from~\cite{hu2005orbitrap}.}\label{fig:orbitrap}
+\end{figure}
+
+[TODO: Jakou přesně chybu, dynamic reange atp ten orbitrap má? Potřebujeme to k analýze.]
+
+
+\subsection{Precursor fragmentation}
+
+In tandem mass spectrometry, once the mass spectrum of the initial sample is analysed (MS1), the \emph{precursors} are selected according to their mass and fragmented, and the fragments are undergo yet another mass analysis (MS2). Again, there are many fragmentation techniques, each useful for a different type of analysis.
+
+When aiming to observe post-translational modifications and to preserve the volatile bond connecting the PTM to the peptide, electron-capture dissociation (ECD)~\cite{zubarev2000electron} or electron-transfer dissociation (ETM)~\cite{syka2004peptide} are preferred. In ECD a multiply positively charged precursor ion is hit by a beam of low-energy electrons, while in ETD the electron transfer is induced by negatively charged reagent ions, both of these ultimately leading to the creation of a radical cation and amine backbone bond cleavage, resulting in the creation of \(c\) and \(z\) ions, as illustrated on \Cref*{fig:fragment-types}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.75\linewidth]{img/fragment-types.png}
+  \caption{A singly positively charged peptide with annotated fragmentation types. Signature CID b/y ion fragments are marked with open circles, while the typical ECD and ETD c/z ion fragments are marked with filled circles. Image taken from~\cite{hart2014review}.}\label{fig:fragment-types}
+\end{figure}
+
+The fragmentation method we focus on in this work, however, is collision-induced dissociation (CID). It has a different fragmentation signature compared to the abovementioned methods (see \Cref*{fig:fragment-types}), and it doesn't preserve PTMs nearly as well as they do. Thankfully, DBs are not as labile as the bonds connecting PTMs to the peptide, and thus CID can be safely used to produce fragments from bridgetides [citace]. A similar fragmentation signature to CID can also be obtained by infrared multiphoton dissociation (IRMPD)~\cite{oomens2006gas}. Because IRMPD, and the related UV-MPD, do not require collision gasses to be present for the fragmentaion, they are well suited for analysers operating under high vacuum, such as FT-ICR\@.
+
+\subsubsection{Collision-induced dissociation}
+
+Collision-induced dissociation is the classical fragmentation method, involving
+
+\begin{enumerate}
+  \item V CID vznikají především b/y ionty.
+  \item Může dojít he ztátě H2O nebo NH3, tzv. neutral loss.
+  \item Pokud je v peptidu prolin, dochází někdy k double breakům. Zajímavé je, že k nim (prý) dochází častěji i v případech, že fragment obsahuje SS můstky (a k tomu nějaká speciální rezidua atd). Tento fakt využíváme v algoritmu.
+  \item Jaký mají fragmenty náboj?
+  \item Co se děje s bridgetidy?
+\end{enumerate}
+
+
+\section{Computational interpretation of bridgetide spectra}
+
+\begin{enumerate}
+  \item Výstupem MSMS je sada spekter, u kterých známe jejich prekurzorovou hmotu a prekurzorovu charge.
+  \item Ke spektrům poté budeto ručně, nebo algoritmicky (jako u nás) přiřazujeme peaky k in-silico vygenerovaným fragmentům.
+  \item Přiřazování kompikuje to, že peptidy mohou být ůrzně modifikované (alkylace, oxidace Met atp).
+  \item (obrázek namatchovaného spektra z PDV)
+\end{enumerate}
+
+\section{Computational determination of disulphide bond linkage}
+
+
+\subsection{Problem complexity}
+
+\begin{enumerate}
+  \item Problem statement a definice.
+  \item Převedení na subset sum.
+  \item (obrázek namatchovaného spektra z PDV)
+\end{enumerate}
+
+\subsection{Current approaches}
+
+\begin{enumerate}
+  \item Máme jeden protein, ale je to těžké.
+  \item Metody z Petřina mailu:
+  \item Metoda 1
+  \item Metoda 2
+  \item Metoda 3
+  \item Jaké mají slabé stránky, proč jim to funguje / nefunguje, co ještě nezkusili. (determinace přes prekurzory)
+\end{enumerate}
+
+
+% \chapter{Important first chapter}
+% \label{chap:refs}
+
+% First chapter usually builds the theoretical background necessary for readers to understand the rest of the thesis. You should summarize and reference a lot of existing literature and research.
+
+% You should use the standard \emph{citations}\todo{Use \textbackslash{}emph command like this, to highlight the first occurrence of an important word or term. Reader will notice it, and hopefully remember the importance.}.
+
+% \begin{description}
+% \item[Obtaining bibTeX citation] Go to Google Scholar\footnote{\url{https://scholar.google.com}}\todo{This footnote is an acceptable way to `cite' webpages or URLs. Documents without proper titles, authors and publishers generally do not form citations. For this reason, avoid citations of wikipedia pages.}, find the relevant literature, click the tiny double-quote button below the link, and copy the bibTeX entry.
+% \item[Saving the citation] Insert the bibTeX entry to the file \texttt{refs.bib}. On the first line of the entry you should see the short reference name --- from Scholar, it usually looks like \texttt{author2015title} --- you will use that to refer to the citation.
+% \item[Using the citation] Use the \verb|\cite| command to typeset the citation number correctly in the text; a long citation description will be automaticaly added to the bibliography at the end of the thesis. Always use a non-breakable space before the citing parenthesis to avoid unacceptable line breaks:
+% \begin{Verbatim}
+% Trees utilize gravity to invade ye
+% noble sires~\cite{newton1666apple}.
+% \end{Verbatim}
+% \item[Why should I bother with citations at all?] For two main reasons:
+% \begin{itemize}
+% \item You do not have to explain everything in the thesis; instead you send the reader to refer to details in some other literature. Use citations to simplify the detailed explanations.
+% \item If you describe something that already exists without using a citation, the reviewer may think that you \emph{claim} to have invented it. Expectably, he will demand academic correctness, and, from your perspective, being accused of plagiarism is not a good starting point for a successful defense. Use citations to identify the people who invented the ideas that you build upon.
+% \end{itemize}
+% \item[How many citations should I use?]
+% Cite any non-trivial building block or assumption that you use, if it is published in the literature. You do not have to cite trivia, such as the basic definitions taught in the introductory courses.
+
+% The rule of thumb is that you should read, understand and briefly review at least around 4 scientific papers. A thesis that contains less than 3 sound citations will spark doubt in reviewers.
+% \end{description}
+
+% There are several main commands for inserting citations, used as follows:
+% \begin{itemize}
+% \item \citet{knuth1979tex} described a great system for typesetting theses.
+% \item We are typesetting this thesis with \LaTeX, which is based on \TeX{} and METAFONT~\cite{knuth1979tex}.
+% \item \TeX{} was expanded to \LaTeX{} by \citet{lamport1994latex}, hence the name.
+% \item Revered are the authors of these systems!~\cite{knuth1979tex,lamport1994latex}
+% \end{itemize}
+
+% \section{Some extra assorted hints before you start writing English}
+
+% Strictly adhere to the English word order rules. The sentences follow a fixed structure with subject followed by a verb and an object (in this order). Exceptions to this rule must be handled specially, and usually separated by commas.
+
+% Mind the rules for placing commas:
+% \begin{itemize}
+% \item Use the \emph{Oxford comma} before `and' and `or' at the end of a longer, comma-separated list of items. Certainly use it to disambiguate any possible mixtures of conjunctions: \textit{`The car is available in red, red and green, and green versions.'}
+% \item Do not use the comma before subordinate clauses that begin with `that' (like this one). English does not use subordinate clauses as often as Slavic languages because the lack of a suitable word inflection method makes them hard to understand. In scientific English, try to avoid them as much as possible. Ask doubtfully whether each `which' and `when' is necessary --- most of these helper conjunctions can be removed by converting the clause to non-subordinate.
+
+% As an usual example, \xxx{\textit{`The sentence, which I wrote, seemed ugly.'}} is perfectly bad; slightly improved by \xxx{\textit{`The sentence that I wrote seemed ugly.'}}, which can be easily reduced to \textit{`The sentence I wrote seemed ugly.'}. A final version with added storytelling value could say \textit{`I wrote a sentence but it seemed ugly.'}
+% \item Consider placing extra commas around any parts of the sentence that break the usual word order, especially if they are longer than a single word.
+% \end{itemize}
+
+% Do not write long sentences. One sentence should contain exactly one fact. Multiple facts should be grouped in a paragraph to communicate one coherent idea. Paragraphs are grouped in labeled sections for a sole purpose of making the navigation in the thesis easier. Do not use the headings as `names for paragraphs' --- the text should make perfect sense even if all headings are removed. If a section of your text contains one paragraph per heading, you might have wanted to write an explicit list instead.
+
+% Every noun needs a determiner (`a', `the', `my', `some', \dots); the exceptions to this rule, such as non-adjectivized names and indeterminate plural, are relatively scarce. Without a determiner, a noun can be easily mistaken for something completely different, such as an adjective or a verb.
+
+% Consult the books by \citet{glasman2010science} and \citet{sparling1989english} for more useful details.
