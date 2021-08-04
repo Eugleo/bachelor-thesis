@@ -16,7 +16,7 @@ Non-interlinked cysteines have an important pH-regulating function within protei
 
 There are many methods aiming to determine the positions of DBs, on of them is tandem mass spectrometry combined with liquid chromatography (LC-MSMS). LC-MSMS is a popular general analysis technique, often used in proteomics for its accuracy and relative straightforwardness of the experiments (?) [citace].
 
-In LC-MSMS, the protein is eventually fragmented to smaller charged peptides whose mass to charge ratio (\(m/z\)) is measured with atomic precision. The whole experiment can be designed in a way that the DBs are preserved which results in the occurence of \emph{bridgetides} with specific \(m/z\) fragmentation signatures. Computational analysis can help us discover these fragmentation spectra and determine the original positions of the DBs in the protein.
+In LC-MSMS, the protein is eventually fragmented to smaller charged peptides whose mass to charge ratio (\(m/z\)) is measured with atomic precision. The whole experiment can be designed in a way that the DBs are preserved which results in the occurence of \emph{breptides} with specific \(m/z\) fragmentation signatures. Computational analysis can help us discover these fragmentation spectra and determine the original positions of the DBs in the protein.
 
 % TODO ... a tohle jsme si dali za task; deteminovat pozici DBs z hmotnostních spekter.
 
@@ -59,7 +59,7 @@ In the context of proteomics, mass spectrometry experiments can be either single
 \begin{figure}
   \centering
   \includegraphics[width=.9\linewidth]{img/msms-workflow.png}
-  \caption{An ordinary MS/MS workflow diagram. While the specific intrumentation details differ from spectrometer to spectrometer, the general structure of ionize \textrightarrow{} analyse \textrightarrow{} fragment \textrightarrow{} analyse is common to all of the MS/MS spectrometry experiments. Image taken from~\cite{domon2006mass}.}\label{fig:mass-spectrometry-workflow}
+  \caption{An ordinary MS/MS workflow diagram. While the specific intrumentation details differ from spectrometer to spectrometer, the general structure of ionize \textrightarrow{} analyse \textrightarrow{} fragment \textrightarrow{} analyse is common to all of the MS/MS spectrometry experiments. Image taken from~\citet{domon2006mass}.}\label{fig:mass-spectrometry-workflow}
 \end{figure}
 
 Both the single-stage and MS/MS experiments begin similarly: the sample peptides are ionized, the ions travel through an electromagnetic field in an analyser and into a detector, whilst their mass-to-charge (\(m/z\)) is being calculated~\cite{gross2006mass}. In single-stage mass spectrometry, the experiment ends there, while in MS/MS, some of these \emph{precursors} are selected to undergo fragmentation in the collision cell, as shown in \Cref{fig:mass-spectrometry-workflow}. The resulting fragments are also analysed and their \(m/z\) values noted; the output of the MS/MS experiment are the precursor masses and their fragmentation spectra, an example of which can be seen one figure \Cref{fig:frag-spectrum}.
@@ -105,7 +105,7 @@ Quadrupoles can also trap specific ions inside for prolonged period of time inst
 \begin{figure}
   \centering
   \includegraphics[width=.4\linewidth]{img/quadrupole.png}
-  \caption{A quadrupole with two highlighted classes of ion trajectories. Thanks to its \(m/z\) value, the ion with green trajectory passes through the quadrupole and is ultimately detected, while the one with the red trajectory is filtered out. Image taken from~\cite{2021Mass}.}\label{fig:quadrupole}
+  \caption{A quadrupole with two highlighted classes of ion trajectories. Thanks to its \(m/z\) value, the ion with green trajectory passes through the quadrupole and is ultimately detected, while the one with the red trajectory is filtered out. Image taken from~\citet{2021Mass}.}\label{fig:quadrupole}
 \end{figure}
 
 \subsubsection{Mass spectrometry based on Fourier transform}
@@ -117,7 +117,7 @@ For our work, the most important analyser type is the Orbitrap~\cite{hu2005orbit
 \begin{figure}
   \centering
   \includegraphics[width=.5\linewidth]{img/orbitrap.png}
-  \caption{An orbitrap mass analyser with a typical ion trajetrory highlighted. The ion circulates around the center while simultanously oscillating along the z-axis. Image taken from~\cite{hu2005orbitrap}.}\label{fig:orbitrap}
+  \caption{An orbitrap mass analyser with a typical ion trajetrory highlighted. The ion circulates around the center while simultanously oscillating along the z-axis. Image taken from~\citet{hu2005orbitrap}.}\label{fig:orbitrap}
 \end{figure}
 
 Orbitrap má vysoký dynamický rozsah a chybovost i pod 1ppm, lze jej napojit na ESI (a potažmo na LC-MSMS) je tedy pro naše účely ideální.
@@ -127,21 +127,17 @@ Orbitrap má vysoký dynamický rozsah a chybovost i pod 1ppm, lze jej napojit n
 
 In tandem mass spectrometry, once the mass spectrum of the initial sample is analysed (MS1), the \emph{precursors} are selected according to their mass and fragmented, and the fragments are undergo yet another mass analysis (MS2). Again, there are many fragmentation techniques, each useful for a different type of analysis.
 
-% TODO E-věci fungují jen s multiply charged peptidy ,protože jim srazí náboj.
-
-When aiming to observe post-translational modifications and to preserve the volatile bond connecting the PTM to the peptide, electron-capture dissociation (ECD)~\cite{zubarev2000electron} or electron-transfer dissociation (ETM)~\cite{syka2004peptide} are preferred. In ECD a multiply positively charged precursor ion is hit by a beam of low-energy electrons, while in ETD the electron transfer is induced by negatively charged reagent ions, both of these ultimately leading to the creation of a radical cation and amine backbone bond cleavage, resulting in the creation of \(c\) and \(z\) ions, as illustrated on \Cref*{fig:fragment-types}.
+When aiming to observe post-translational modifications and to preserve the volatile bond connecting the PTM to the peptide, electron-capture dissociation (ECD)~\cite{zubarev2000electron} or electron-transfer dissociation (ETM)~\cite{syka2004peptide} are preferred. In ECD a multiply positively charged precursor ion is hit by a beam of low-energy electrons, while in ETD the electron transfer is induced by negatively charged reagent ions, both of these ultimately leading to the creation of a radical cation and amine backbone bond cleavage, resulting in the creation of \(c\) and \(z\) ions, as illustrated on \Cref*{fig:fragment-types}. These methods require a multiply-charged precursor ion, because the absoption of the elector lowers the overall charge by 1, making singly charged precursor ions undetectable.
 
 \begin{figure}
   \centering
   \includegraphics[width=.75\linewidth]{img/fragment-types.png}
-  \caption{A singly positively charged peptide with annotated fragmentation types. Signature CID b/y ion fragments are marked with open circles, while the typical ECD and ETD c/z ion fragments are marked with filled circles. Image taken from~\cite{hart2014review}.}\label{fig:fragment-types}
+  \caption{A singly positively charged peptide with annotated fragmentation types. Signature CID b/y ion fragments are marked with open circles, while the typical ECD and ETD c/z ion fragments are marked with filled circles. Image taken from~\citet{hart2014review}.}\label{fig:fragment-types}
 \end{figure}
 
-% TODO Přepsat následující odstavec
+The fragmentation method we focus on in this work, however, is collision-induced dissociation (CID). It has a different fragmentation signature compared to the abovementioned methods (see \Cref*{fig:fragment-types}), and it doesn't preserve PTMs nearly as well as they do. Thankfully, DBs are not as labile as the bonds connecting PTMs to the peptide, and thus CID can be safely used to produce fragments from breptides [citace]. A similar fragmentation signature to CID can also be obtained by infrared multiphoton dissociation (IRMPD)~\cite{oomens2006gas}. Because IRMPD, and the related UV-MPD, do not require collision gasses to be present for the fragmentaion, they are well suited for analysers operating under high vacuum, such as FT-ICR\@.
 
-The fragmentation method we focus on in this work, however, is collision-induced dissociation (CID). It has a different fragmentation signature compared to the abovementioned methods (see \Cref*{fig:fragment-types}), and it doesn't preserve PTMs nearly as well as they do. Thankfully, DBs are not as labile as the bonds connecting PTMs to the peptide, and thus CID can be safely used to produce fragments from bridgetides [citace]. A similar fragmentation signature to CID can also be obtained by infrared multiphoton dissociation (IRMPD)~\cite{oomens2006gas}. Because IRMPD, and the related UV-MPD, do not require collision gasses to be present for the fragmentaion, they are well suited for analysers operating under high vacuum, such as FT-ICR\@.
-
-\subsubsection{Dissociation based on collision with neutral gas}
+\subsubsection{Dissociation based on collision with neutral gas molecules}
 
 Two common fragmentation methods fall under the umbrella of fragmenting by collision with neutral gas: collision-induced dissociation (CID) and higher-energy C-trap dissociation (HCD). Both of them make the accelerated precursor ions collide with neutral gas molecules, ultimately leading to its fragmentation, but use different instrumentation to reach this goal, and have different performance characteristics in different contexts.
 
@@ -151,20 +147,20 @@ The similarities do not end there: HCD and a specific subset of CID, a so called
 
 The beam-type CID is often connected to a quadrupole analyser (being a quadrupole itself in a 3-quadrupole mass spectrometer), however, which can sometimes make it hard to interpret these spectra due to its relatively low accuracy. As shown by \citet{michalski2012systematic}, ion trap CID, unlike the beam-type variant, doesn't lead to the creation of internal ions. Furthermore, it has limits regarding the containment of molecules below a certain mass threshold, leading to a mass cutoff~\cite{louris1987instrumentation}.
 
-In the year 2007, the HCD dissiociation technique has been introduced~\cite{olsen2007higher}, combining the richer sequence information~\cite{xia2006ion} and lower mass cutoff of beam-type CID with the superior resultion capacity and accuracy of the orbitrap analyser, that was reported to be in the sub 1 ppm levels by the original paper. Data we use in this thesis are generated with HCD\@, because the high accuracy of its MS2 spectra makes it easier to filter out false positives that occur naturally due to the combinatoric nature of the problem, and furthermore the detected internal ions can be sometimes useful when determining the connectivity of complex DB configrations. Because the HCD fargmentation pathways are key to our work, we will discuss them in more detail below.
+In the year 2007, the HCD dissiociation technique has been introduced~\cite{olsen2007higher}, combining the richer sequence information~\cite{xia2006ion} and lower mass cutoff of beam-type CID with the superior resultion capacity and accuracy of the orbitrap analyser; the accuracy was reported to be in the sub 1 ppm levels by the original paper. Data we use in this thesis are generated with HCD\@, because the high accuracy of its MS2 spectra makes it easier to filter out false positives that occur naturally during in silico matching of the spectra due to the combinatoric nature of the problem. Furthermore the detected internal ions can occasionaly be useful when determining the connectivity of complex DB configrations. Because the HCD fargmentation pathways are key to our work, we will discuss them in more detail below.
 
 \paragraph{Fragment types} The fragment types of a very pure sample protein were nicely summarized by \citet{michalski2012systematic}. Ions of \(b\) and \(y\) type comprise most of the spectral intensity (54\%, see \Cref{fig:hcd}), together with \(b\) ions with \(\ce{CO}\) neutral loss that are interchangeable with \(a\) ions. The ions themselves have different distributions, \(y\) ions being the most abundant. Other neutral loss ions, be it a loss of water, amonia, or an amino-acid-specific small molecule\footnote{If specific amino acid neutral losses are of interest, the wonderful review by~\cite{paizs2005fragmentation} lists many of them.}, together with internal ions, can be attributed a quarter of the total fragment intensity. Immonium ions account for 6\% of the intensity, totaling 85\% intensity that can be explained with the current understanding of HCD fragmentation pathways. For a visual overview of the many different HCD fragmentation types, please refer to \Cref{fig:fragment-types-hcd}.
 
 \begin{figure}
   \centering
   \includegraphics[width=.9\linewidth]{img/fragment-types-hcd.png}
-  \caption{During HCD, \(b, y\), and to a lesser extent \(a\), ions are the most common, together with internal ions and immonium ions, and their counterparts with neutral losses. Image taken from~\cite{michalski2012systematic}.}\label{fig:fragment-types-hcd}
+  \caption{During HCD, \(b, y\), and to a lesser extent \(a\), ions are the most common, together with internal ions and immonium ions, and their counterparts with neutral losses. Image taken from~\citet{michalski2012systematic}.}\label{fig:fragment-types-hcd}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=.9\linewidth]{img/hcd.png}
-  \caption{(B) The regular \(b, y\), and \(a\) ions take up 54\% of the measured spectral intensity. Another 25\% is explained by fragments with neutral-loss and internal fragments, and another 6\% by immonium ions. Together, those four account for 85\% of the measured intensity. It is true that almost a half of the peaks are still left unexplained (A), however, given all of these fragments have to split the remaining 15\% of intensity, they are probably rather rare and are only of moderate importance. Image taken from~\cite{michalski2012systematic}.}\label{fig:hcd}
+  \caption{(B) The regular \(b, y\), and \(a\) ions take up 54\% of the measured spectral intensity. Another 25\% is explained by fragments with neutral-loss and internal fragments, and another 6\% by immonium ions. Together, those four account for 85\% of the measured intensity. It is true that almost a half of the peaks are still left unexplained (A), however, given all of these fragments have to split the remaining 15\% of intensity, they are probably rather rare and are only of moderate importance. Image taken from~\citet{michalski2012systematic}.}\label{fig:hcd}
 \end{figure}
 
 \paragraph{Charge} Coming from ESI-ionized precursors, fragments can be and indeed often are multiply charged~\cite{katta1991use, michalski2012systematic}; the only real limit of the fragment charge is the charge of its precursor. Of course, uncharged fragments are undetectable by the mass spectrometer. According the research on CID of crosslinked peptides by \citet{giese2016study}, most of the crosslined fragments were found to have a positive charge of at least 2, while an overwhelming majority of linear fragments had a positive charge of 1. Their results are illustrated on \Cref{fig:crosslink-charge}.
@@ -172,58 +168,65 @@ In the year 2007, the HCD dissiociation technique has been introduced~\cite{olse
 \begin{figure}
   \centering
   \includegraphics[width=.5\linewidth]{img/crosslink-charge.png}
-  \caption{Most linear fragments have charge 1, and most crosslinked fragments have a charge of 2 or higher. Image taken from~\cite{giese2016study}.}\label{fig:crosslink-charge}
+  \caption{Most linear fragments have charge 1, and most crosslinked fragments have a charge of 2 or higher. Image taken from~\citet{giese2016study}.}\label{fig:crosslink-charge}
 \end{figure}
 
 The fragmentation pathways are complicated enough even without the presence of DBs, and the addition of peptide crosslinks complicates the matter further. We have to take into account the alkylation of non-bonded cysteines during the analaysis; the DB can be cleaved during the dissociation, resulting in fragments roughly resembling the fragmentation pathway of each connected peptide in the original precursor. If left intact, the crosslinks between precursors (or within one precursor) widen the possibilities of attainable mass values considerably.
 
-\paragraph{Disulphide bridges} Although DBs are not affected by low-energy CID as much as the other PTMs~\cite{paizs2005fragmentation, lioe2007novel}, in high energy collision fragmentation, cleavage of the S-S bond can be observed with a higher probability~\cite{bean1992characterization}. The cleavage of the bond can result in the formation of an asymetrical distribution of masss on the two cysteines~\cite{zhang2006mapping}, that has been nicely ilustrated by \citet{tsai2013mass}, see \Cref{fig:disulfide-bond-cleavage-assymetry} for details. The sole presence of a DB influences the fragmentation pathway of the whole peptide; \citet{mormann2008fragmentation} reports a low but detectable signal of peptide backbone cleavages in the bonds instide S-S loop of an internal DB, while \citet{clark2011collision} reports that internal ions occur more frequently. The latter complicates the analysis noticeably as we have to take all combinations of cleavage positions from all interlinked peptides in the precuror, but also in theory allows us to differentiate between different configurations of intra-peptide bonds, such as those on \Cref{fig:intrapeptide-bonds}.
+\paragraph{Disulphide bridges} Although DBs are not affected by low-energy CID as much as the other PTMs~\cite{paizs2005fragmentation, lioe2007novel}, in high energy collision fragmentation, cleavage of the S-S bond can be observed with a higher probability~\cite{bean1992characterization}. The cleavage of the bond can result in the formation of an asymetrical distribution of mass on the two cysteines~\cite{zhang2006mapping}, that has been nicely ilustrated by \citet{tsai2013mass}, see \Cref{fig:disulfide-bond-cleavage-assymetry} for details. The sole presence of a DB influences the fragmentation pathway of the whole peptide; \citet{mormann2008fragmentation} reports a low but detectable signal of peptide backbone cleavages in the bonds instide S-S loop of an internal DB, while \citet{clark2011collision} reports a higher frequence of internal ions. The latter complicates the analysis noticeably as we have to take all combinations of cleavage positions from all interlinked peptides in the precuror, but also in theory allows us to differentiate between different configurations of intra-peptide bonds, such as those on \Cref{fig:intrapeptide-bonds}.
 
 \begin{figure}
   \centering
   \includegraphics[width=.5\linewidth]{img/intrapeptide-bond.jpeg}
-  \caption{An example of different possible configurations of intra-peptide DBs. Image taken from~\cite{durand2013tandem}.}\label{fig:intrapeptide-bonds}
+  \caption{An example of different possible configurations of intra-peptide DBs. Image taken from~\citet{durand2013tandem}.}\label{fig:intrapeptide-bonds}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=.6\linewidth]{img/disulfide-bond-cleavage-assymetry.jpg}
-  \caption{Under different dissociation strategies, DBs manifest different cleavage characteristics. Under CID, the cleavage results into two possible assymetrical mass distributions. Image taken from~\cite{tsai2013mass}.}\label{fig:disulfide-bond-cleavage-assymetry}
+  \caption{Under different dissociation strategies, DBs manifest different cleavage characteristics. Under CID, the cleavage results into two possible assymetrical mass distributions. Image taken from~\citet{tsai2013mass}.}\label{fig:disulfide-bond-cleavage-assymetry}
 \end{figure}
 
 To recapitulate, HCD fragmentation pathways of non-crosslinked peptides are relatively well-understood. However, the presence of DBs results in complex fragmentation patterns that are hard to analyze. The existing methods for DB identification thus usually involve a lot manual work, or do the bulk of the analysis in silico, but require the researcher to manually discard the many generated false positive matches afterwards. We briefly review some of these methods in the next section.
 
-% TODO přidat další info o tom, jak to funguje s bridgetidy
+\section{Breptide spectra interpretation}
 
-\section{Bridgetide spectra interpretation}
+This section concerns itself with the existing methods aiming to determine the quantity and position of DBs in a protein using tandem mass spectrometry. We focus on the computational methods, and finally formulate the precise task that this thesis is trying to solve together with a simple complexity analysis.
 
-TODO je to komplikované , jak říká tsai2013mass
+As noted by \citet{lakbub2018recent}, there are two main types of DB characterization. Profile comparison methods make use of two samples, one reduced with the DBs removed and one nonreduced that has its DBs still intact. Differential analysis is then deployed on a chromatogram profile of these two samples to determine which peptides are in the nonreduced sample, but not in the reduced one. Those peptides are suspect of being breptides and are further analyzed by MS/MS. Intact analysis methods only data from the nonreduced sample. Thus, they simpler from the sample preparation standpoint, but have to work with less information than the profile comparison methods.
 
-Výstupem MSMS je sada spekter, u kterých známe jejich prekurzorovou hmotu a prekurzorovu charge, a spektrum jejich fragmentů. Běžný task v bottom-up proteomice je podle těchto fragmentů zjistit, které peptidy z databáze se ve vzorku nacházely. U bridgetidů je to o něco složitější, protože vzniká širší škála fragmentů. na druhou stranu víme, ze kterého proteinu procházejí, což naopak analýzu zjednodušuje.
+In each of the both categories, the protocols further differ in the choice of of sample separation, ionization, and fragmentation methods, the choice of mass analyzer, and whether the bulk of the analysis is performed manually or automatically~\cite{lakbub2018recent}. Some of the software for automatic DB characterisation is reviewd below; for the sake of completness, an example of a partially-manual method now follows.
 
-Přístupy lze rozdělit podle toho, jakou formu separace, ionizace, analýzy, fragmentace a interpretace používají. Interpretace bývá často automatická, někdy ale i manuální, například v tomto experimentu [citace manuální metody]. Dále se však budeme zabývat už jen automatickými přístupy, protože ty manuální trvají dlouho a vyžadují expertní čas.
+\citet{wu2009mass} propose an intact analysis method based on LC-MS/MS with ETD\@. The prepared breptides are measured on MS1 and fragmented by ETD\@. During ETD the DBs are dissociated, resulting in fragmentation spectra with two prominent peaks that represent the original peptides that were connected with the DB\@. Fragments from these two peaks are put into an MS3 step with CID fragmentation to gain sequence information about them. This sidesteps the problem of not having data from the non-bound peptides in the intact methods. Software for fragment mass searching and matching is used, but because it is not made with DB research in mind, the method requires manual intervensions when interpreting internal ion peaks, or when the peptide assignment to the birdgetide spectra based on the two prominent ETD peaks is not clear cut. Specialized sofrtware dedicated for DB cahracterisation is reviewed in the next section.
 
-\subsection{Current approaches}
+\subsection{Current computational approaches}
 
-\begin{enumerate}
-  \item Máme jeden protein, ale je to těžké.
-  \item Metody z Petřina mailu:
-  \item Metoda 1
-  \item Metoda 2
-  \item Metoda 3
-  \item Jaké mají slabé stránky, proč jim to funguje / nefunguje, co ještě nezkusili. (determinace přes prekurzory)
-\end{enumerate}
+Dedicated DB characterisation software usually only needs data from nonreduced samples, however, there are some commercial options that offer the possibility to add data from reduced samples as well, such as PepFinder and BioPharma Finder, as noted by \citet{lakbub2018recent}. Refer to the same publication for a more comprehensive list of past and current manual and compuational DB characterisation methods.
+
+SimXL is tool for general peptide cross-linking analysis~\cite{lima2015sim}, including DBs~\cite{cui2019comprehensive}, seemingly without having a preferred fragmentation method. SimXL has three main differentiating factors. Frist is the user-friendly UI that allows the reasearchers to view not only the interpreted results, but also the annotated data based on which they were computed. Second is its search space reduction heuristc based on the presence of a reporter ion~\cite{iglesias2010identification}, a peak that is specific to the fragmentation spectra of crosslinked precursor; in the context of our task, alkylated cysteines could be possibly interpreted as reporters~\cite{wei2020identification}. Finally, SimXL employs a further search space-reduction heuristic based on dead-end modifications, but we believe it is probably inapplicable in the context of DB characterisation.
+
+A popular method by \citet{liu2014facilitating} comes with a whole recommended research protocol. Samples are digested with pepsin to avoid the DB scrambling that is typical low-pH for tryptic digestion, fragmented with ETH followed by HCD, together called \emph{electron transfer higher energy dissociation} (EThcD), and finally analyzed with SlinkS, a dedicated DB matching algorithm. As mentioned previously, it is possible to extract information about the peptides contituting the precursor ion from the ETH fragmentation spectra. The HCD step is employed in order to gain sequenec information about these peptides, similary to how MS3 has been used in~\cite{wu2009mass}. Ultimately, thanks to EThcD, two peaks corresponing to the precursor peptide pair are identified in each fragmentation spectrum, and the whole precursor match is scored by scoring the other individual fragments now that we know from which precursor they (allegedly) came. The method is elegant, but its main shortcoming is the fact that it only works with dipeptide precursors; it also ignores fragments with neutral loss and internal ion fragments. That makes it impossible to identify some of the more complicated DB configurations.
+
+In fact, all of the aforemetioned methods should be able to match simple interpeptide DBs, but they reportedly struggle with more complex intrapeptide bonds or intertwined interpeptides~\cite{lakbub2018recent}; some of those can be seen on \Cref{fig:bond-types}. A wide array of approaches to DBs is offered, leading to a yet wider array of recommended sample preparation and fragmentaion protocols. ETD spectra offer the information about the constituent peptides thansk to the DB cleavage, which is indisputably be useful when assigning precursor peptides. On the other hand, CID-based approaches have access to richer but more complicated fragmentation spectra, including interlinked fragments and internal ions with intact DBs; these are useful for precise pinpointing of the DB location. We can conclude that computational DB characetrisation is a hard problem to solve, a notoin we further formalize in the next section.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.9\linewidth]{img/bond-types.png}
+  \caption{Illustrative examles of different ways peptides can be connected by disulfide bonds, ranging from realtively simple examples (1, 3, 5) to complex multipeptide or multibond configurations (4, 8). The more complicated configurations proved to be hard to characterise computationally. Image by~\citet{lakbub2018recent}. (DSB = disulfide bond, gp140 = glycoprotein 140, rhASA = recombinant human arylsulfatase A)}\label{fig:bond-types}
+\end{figure}
 
 
 \subsection{Problem statement and complexity}
 
-Pojďme tedy shrnout stávající poznatky pro naši konkrétní variantu problému. (co nás inpirovalo k tomuto přístupu?)
+%TODO Z biologického hlediska je tento problém složitý, jednak z pohledu sample preparation, tak z pohledu následné analýzy, protože přítomnost můstků mnohonásobně zvyšuje počet potenciálních fragmentů.
 
-- trypsin, ESI, orbitrap, HCD, a modifikace typu met-oxidace a alkylace.
+% TODO Abychom jej mohli analyzovat z výpočetního hlediska, musíme nejprve přesně definovat, co bereme jako náš task. Naším taskem z naměřených prekurzorových hmot a z jejich fragmentačních spekter odhadnout, které cysteiny byly ve vzorku alkylované, a které byly spojeny můstkem. Budeme uvažovat pouze pure vzorky obsahující jeden protein. V zásadě se tedy jedná o task přiřazování fragmentů k namšěřeným peakům, následnému skórování prekurzorů na základě těchto přiřazení, a finálnímu oskórování jednotlivých můstků na základě skóre různých prekurzorů.
 
-Teoreticky se ten problém dá převést na subset sum, takhle: ... To znamená, že je NP úplný se složitostí ..., můžeme si ho ale zjednodušit tím, že ho oconstrainujeme na základě biochemických poznatků, které jsme uvedli výše, hlavně v kapitole HCD.
+% TODO Bridgetidy si můžeme představit jako graf, vrcholy jsou aminokyseliny a hrany jsou mezi AMK které jsou pojeny vazbou (peptidovou, S-S). Každý vrchol i hrana má nějaké ohodnocení, a my v obecném případě hledáme takový souvislý podgraf, který bude mít v součtu zadané ohodnocení. Tento graf není nutně acyklycký, protože dva peptidy mohou být spjeny i několika můstky. V obecném příapdě tedy řeším obdobu maximum weight connected subgraph, který je NP pomocí převedení na Steinerovy ohodnocené stromy. [The Maximum Weight Connected Subgraph Problem]
 
-Vzniká obrovská kombinatorická komplexita, kterou si lze zjedodušit tím, že skombinujeme bottom-up přístup s top-down — konkrétně nejdříve namatchujeme prekurzory, protože víme, z jakého proteinu pocházejí a ten task je sám o sobě zjednodušenou verzí tohoto tasku. Poté už nnematchujeme fragmenty z celého univerza/proteinu, ale pouze z několiak málo prekurzorů, které odpovídají konkrétnímu spektru.
+% TODO Kdybychom se omezili pouze na acyklické prekurzory a hledali teda fragment ve stromu, je dokázáno, že je to problém v O(n^3) [Node-Optimal Connected k-Subgraphs] (maximalizaci jde u grafu s kladnými vahami jednoduše převést na hledání konkrétního součtu). Problém je navíc omezen tím, že běžně nechceme hledat jakýkoli podgraf, ale jen takový, který končí "uprosřed" jen v omezeném množství případů, což by dále mohlo zrychli t implementaci — končení uprostřed v tomto případě odpovídá breaku způsobenému disociací. Na druhou stranu, reálný problém je o trochu složitějí (o pár multiplikativních konstant), protože některé nody mohou být modifikované, a stejně tak jednotlivé konce.
+
+
 
 
 % \chapter{Important first chapter}
@@ -263,6 +266,7 @@ Vzniká obrovská kombinatorická komplexita, kterou si lze zjedodušit tím, ž
 % \section{Some extra assorted hints before you start writing English}
 
 % Strictly adhere to the English word order rules. The sentences follow a fixed structure with subject followed by a verb and an object (in this order). Exceptions to this rule must be handled specially, and usually separated by commas.
+
 
 % Mind the rules for placing commas:
 % \begin{itemize}
