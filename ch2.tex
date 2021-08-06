@@ -1,47 +1,119 @@
-\chapter{Methods}
-\label{chap:something}
+\chapter{Differential characterisation of disulfide bonds}\label{chap:methods}
 
-Následující detaily doplní Martin.
+\paragraph{Reagents and instrumentation} Trypsin was purchased from Roche, lysosyme and lipase were obtained from Sigma-Aldrich. The used liquid chromatography setup was RSLC nano Ultimate 3000 (Thermo Scientific), for tandem mass spectrometry Orbitrap Fusion Lumos (Thermo Scientific) was employed.
 
-\begin{enumerate}
-	\item Trypsin máme z nějaké firmy, lysozym a BSA taky.
-	\item Používáme orbitrapový analyzátor s přeností 10–15ppm. Pro filtraci a CID používáme neonový quadrupól.
-	\item Naše metoda stojí na ručně psaném mutuálně rekurzivním biodegradabilním vegan-friendly algoritmu.
-\end{enumerate}
+\paragraph{Obtaining the data} We have anaylzed two proteins, lysosyme (LYS) and lipase (LIP). Two samples of each have been obtained in separate sample preparation pathways; in the AT sample preparation pathway, the samples have been alkylated without prior reduction, while in the RAT pathway, reduction took place before the alkylation. In both cases the alkylation has been done by iodacetamide (IAA), resulting in a covalent addition of a carbamidomethyl group (57.07 Da) onto cysteines without DBs; the reduction was achieved by dithiothreitol (DTT). After that, all four samples have been fully digested by trypsine, resulting in two sets of tryptides for each of the two analysed proteins. The samples have been treated the same for the rest of the experiment. After digestion, the peptides had undergone reverse-LC separation that was directly connected to the mass spectrometer through a nanospray ion source. After the measurement of MS\textsuperscript{1} spectra on a quadrupole, the precursors continue on to be fragmented with HCD\@. The MS\textsuperscript{2} spectra were analysed on an orbitrap analyser, as is implied by the use of HCD fragmentation. Finally, raw MS\textsuperscript{2} match data was exported to mgf files.
 
-\section{Algorithm}
+The data have been kindly provided by a IOCB mass specrometry research group (J. Cvačka), and have been measured a few years ago without any direct connection to this thesis.
 
-\begin{enumerate}
-	\item Algo má dvě části, obě fungují na principu divide and conquer a řeší problém podobný subset sum, ale s více sekvencemi.
-	\item Je napsaný v Pythonu, ale viz kapitola Discussion, není to ideální volba.
-\end{enumerate}
+\section{Dibbi, a program for disulfide bond visualisation}
 
-\subsection{Part one, precursor masses}
+A Python program termed Dibbi has been developed to analyse the positions of DBs in a protein. The input to Dibbi is the sequence of the analysed protein, and the mgf file with the measured MS\textsuperscript{2} data. It then provides a visualisation of computed scores of each of the possible DBs, and a file with the in-silico generated matches to the individual fragments and precursors, allowing for further manual analysis of the visualised results. Although Dibbi is perfectly able to operate only with the AT sample data, for best results it is preferable to analyse their RAT counterpart first. This enables the user to manually tune the parameters of the subsequent AT analysis, allowing for lower number of false positive hits.
 
-Tady výhledově bude podrobnější a formálnější popis subset sum, jeho řešení, a jak se můj problém a můj algo liší. Taky tady bude pseudokód.
+Dibbi first assigns dynamically generated \emph{precursors} to the measured precursor matches, and then assigns in-silico generated fragments from the assigned precursors to the individual peaks in the spectra. Both of the algorithms make use of the divide and conquer~\cite{smith1985design} and branch-and-bound~\cite{boyd2007branch} techniques. Finally, the precurors are scored according to the quality of their fragment matches, among other things, and their score-weighted contributions are added together to form a general overview of the disulfide bonds in the protein. The precursor matching, fragment matching, and scoring algorthms are described in their own sections below.
 
-\begin{enumerate}
-	\item Vygenerujeme možné tryptické peptidy.
-	\item Procházíme všechny prekurzorové hmoty a snažíme se z tryptických peptidů poskládat peptid s vhodnou hmotou.
-	\item Toto ``skládání'' bere v úvahu jak missed cleavages, tak možné propojení peptidů SS můstky. Také uvažuje to, že cysteiny, které nejsou v můstku, jsou modifikovány alkylací (+57). Také uvažuje to, že některé (0–všechny) Met mohou být oxidovány (+16).
-	\item Funguje to v podstatě jako divide and conquer rekurzivní algoritmus na subset sum.
-	\item Výstupem je pro každé spektrum seznam tryptických peptidů, které je možné spojit do peptidu s danou prekurzorovou hmotou. U tohoto seznamu je také určeno, kolik je v něm Cys můstků (tj vlastně kolik je v něm alkylovaných modifikovaných Cys) a kolik je v něm modifikovaných Met.
-	\item Běžně pro jedno spektrum získáme 0–3 takovéto peptidy.
-	\item (hisotogram počtu namatchovaných prekurzorů)
-	\item SLožitost algortmu je nějak šíleně exponenciální a ještě s velkými multiplikativními konstantami, jak tam je spousta těch maybe-modifikací, ale tím, že to je NP, tak se s tím holt musím smířit. Běží to zhruba minutu pro 13000 spekter a středně velký protein (LYS), což je pro praxi ok.
-	\item Modifikace jsou konfigurovatelné., stejně jako hmota alkylace, a počet dovolených interpeptidových můstků.
-\end{enumerate}
+\subsection{Assigning precursor mass}
 
-\subsubsection{Differences from subset sum}
+The protein is first completely digested into peptides that are further undigestable; the protease of our choosing was trypsin, so we call these basal peptides \emph{tryptides}. As mentioned in the first chapter, a protease can sometimes miss a cleavage point, resulting in a peptie chain that is made from two (or more) contiguous basal tryptides connected with peptide bonds --- we call a chain of one or more tryptides a \emph{segment}. Finally, due to crosslinking with disulfide bridges, a \emph{precursor} is made out of one or more of these segments, joined with interpeptide disulfide bonds.
+
+There can be one or more DB connecting a segment to another segment, and there can also be intrapeptide DBs. Cysteines that do not partake in a DB are alkylated, meaning their mass is effectively higher by some configurable constant. In addition, some amino acid residues are sometimes modified, too, such as the methionine undergoing oxidation. The algorithm treats the latter as optional, or ``variable'' modifications.
+
+From the point of view of this part of the algorithm, it matters not where the individual DBs are located, or which exact methionines are modified, because in individual variations are not distiguishable on the basis of precursor mass. Thus, the precursors in the output of the algorithm only include the information about which segments are present, how many DBs there are --- always at least the number of segments minus 1 --- and how many of each kind of variable modifications there are. This information is passed to the next stage of the program.
+
+As for the inner workings of the algorithm, each measured precursor mass is saved into the global variable \(TARGET\), and then the \textsc{FindPrec} function is caled with increasingly higher and higher starting points; in this way, every possible precursor match for the target is found. The \textsc{FindPrec} function is implemented using the divide and conquer technique (see \Cref{alg:findprec}). The function keeps a list of \Var{Selected} segments, and a pointer to \Var{TRYPTIDES}, and in each interation, it tries to
 
 \begin{enumerate}
-	\item V sekvenci hledáme $n$ souvislých podsekvencí (v subset sum je to jakoby až $n$, protože tam žádná souvislost není v podmínce). $n$ určuje, kolik interpeptide SS dovolíme — pokud chceme jen dipeptidy, tak $n=1$, pokud i tripeptidy $n=2$ atp.
-	\item Nedá se moc dělat dynamické programování, protože všechny mass jsou floaty. Sice nehledáme přesný sum a máme nějakou toleranci, její velikost ale závisí na současném stavu algoritmu (protože to je relativní chyba). Asi bychom to ale mohli ignorovat, všechny ty floaty vynásobit stem a jet normálně na přesný součet, viz diskuze.
-	\item Větvení je vícero, protože můžeme skočit na další sekvenci, nebo přibrat modifikace současného rezidua atp.
-	\item (obrázek větvení, srovnání subset sum a tohohle šílenství)
+	\item Combine the possible modifications and DBs in such a way that the \Var{Selected} segments with the modifications have the correct mass, using the \textsc{Combine} function (see \algref{alg:findprec}{alg:findprec:combinations}). \textsc{Combine} implements a divide-and-conquer algorithm for a modified subset sum problem, in which assignments that are within some error boundary of the target are also considered a valid solution.
+	\item Elongate the ``current'' segment it is building by adding the current tryptide to it (see \algref{alg:findprec}{alg:findprec:elongate}, and also the whole \Cref{alg:elongate}).
+	\item End the current segment (effectively simulating a protease cleavage just before the current tryptide) and begin a new one that begins on the current tryptide, or on some tryptide after it. See \algref{alg:findprec}{alg:findprec:end}, and the whole \Cref{alg:newseg}.
 \end{enumerate}
 
-\subsection{Part two, matching fragments}
+As we can see, the pointer to tryptides only ever moves to the right. This is a simple method of symmetry breaking.
+
+\begin{algorithm}
+	\begin{algorithmic}
+		\Function{FindPrec}{$I, \mathit{Selected}, \mathit{Mass}, \mathit{Segments}, \mathit{Cys}, \mathit{Open}$}
+		\State $\mathit{solutions} \gets$ empty list
+
+		\nb{There is no hanging disulfide bond from previous segments}
+		\nb{So let us try to combine residue modifications to find a solution}
+		\If{not $\mathit{Open}$}\label{alg:findprec:combinations}
+		\State $mods \gets$ calculate possible modifications from $\mathit{Selected}$
+		\State $alks \gets$ calculate alkylation count based on seen non-bonded $\mathit{Cys}$
+		\State $combinations \gets$ \Call{Combine}{$mass, mods, alks$}
+		\State return a list of precursors generated from $combinations$
+		\EndIf
+
+		\nb{There are no further solutions, our $\mathit{Mass}$ can not get low enough}
+		\If{$\mathit{Mass}$ is too high, or $i$ is at the end}
+		\State return empty list
+		\EndIf
+
+		\nb{End this segment, connect next one with a disulfide bond}
+		\nb{That is, if we have the segments budget and a free cysteine}
+		\If{not $\mathit{Open}$, and $\mathit{Segments} > 0$, and $\mathit{Cys} > 0$}\label{alg:findprec:end}
+		\State $S \gets$ \Call{NewSegment}{$I, \mathit{Selected}, \mathit{Mass}, \mathit{Segments}, \mathit{Cys}, \mathit{Open}$}
+		\State concatenate $\mathit{solutions}$ with the list $S$
+		\EndIf
+
+		\nb{Elongate the current segment by one tryptide}
+		\State $S \gets$ \Call{Elongate}{$I, \mathit{Selected}, \mathit{Mass}, \mathit{Segments}, \mathit{Cys}, \mathit{Open}$}\label{alg:findprec:elongate}
+		\State concatenate $\mathit{solutions}$ with the list $S$
+		\State return the list $\mathit{solutions}$
+
+		\EndFunction
+	\end{algorithmic}
+	\caption{The main part of the precursor matching algorithm, in which all the braching occurs.}\label{alg:findprec}
+\end{algorithm}
+
+
+\begin{algorithm}
+	\begin{algorithmic}
+		\Function{Elongate}{$I, Selected, \mathit{Mass}, \mathit{Segments}, \mathit{Cys}, \mathit{Open}$}
+		\nb{Prolong the current segment by one tryptide}
+
+		\State $\mathit{tryptide} \gets$ the $I$-th tryptide from the list $\mathit{TRYPTIDES}$
+		\State $\mathit{mass'} \gets$ the mass of $\mathit{tryptide}$ added to $\mathit{Mass}$
+		\State $\mathit{cys'}\gets$ the number of cys in $\mathit{tryptide}$ added to $\mathit{Cys}$
+		\Decl{cys'}{lower \var{cys'} by one if \Var{Open} is true, using a cys to close the bond}
+		\State $\mathit{open'} \gets$ False if this tryptide had any cysteines, otherwise $\mathit{Open}$
+
+		\nb{Call the original function}
+		\State $S \gets$ \Call{FindPrec}{$I + 1, \mathit{Selected}, \mathit{mass'}, \mathit{Segments}, cys', \mathit{open'}$}
+		\State return the list $S$
+
+		\EndFunction
+	\end{algorithmic}
+	\caption{Elongates the currently built precursor segment, adding the current tryptide to it.}\label{alg:elongate}
+\end{algorithm}
+
+
+\begin{algorithm}
+	\begin{algorithmic}
+		\Function{NewSegment}{$I, \mathit{Selected}, \mathit{Mass}, \mathit{Segments}, \mathit{Cys}, \mathit{Open}$}
+		\State $sel' \gets$ the currently ending segment added to $\mathit{Selected}$
+		\State $\mathit{mass'} \gets$ subtract mass of $\ce{H2}$ from $\mathit{Mass}$, due to the new DB
+		\nb{Update the budget, because of the newly started segment}
+		\State $\mathit{seg'} \gets \mathit{Segments} - 1$
+		\nb{Begin the bond with one of our cysteines}
+		\State $\mathit{cys'}\gets \mathit{Cys} - 1$
+		\nb{The new bond is waiting to get ``closed'' by a cys in the next run}
+		\State $\mathit{open'} \gets$ True
+
+		\nb{Finally, start the new segment, try all possible starting points}
+		\For{all possible beginings of the next segment from $I + 1$ onward}
+		\State $i' \gets$ the next beginning
+		\State $S \gets$ \Call{AddSegment}{$i', selected', \mathit{mass'}, segments' cys', \mathit{open'}$}
+		\State return the list $S$
+		\EndFor
+
+		\EndFunction
+	\end{algorithmic}
+	\caption{Ends the currently built precursor segment and begins a new one, beginning with the current tryptide, or any tryptide coming after it.}\label{alg:newseg}
+\end{algorithm}
+
+
+\subsection{Assigning fragment mass}
 
 \begin{enumerate}
 	\item V zásadě to samé, jako v part 1, ale ještě o level kombinatoricky výbuchovatější.
@@ -63,7 +135,7 @@ Problémy jsou následující.
 
 Níže bude opět pseudokód a popis algoritmu podobbný tomu v části 1.
 
-\section{Evaluation}
+\section{Precursor scoring and result visualisation}
 
 \begin{enumerate}
 	\item (jak zpracováváme výstup algo?)
