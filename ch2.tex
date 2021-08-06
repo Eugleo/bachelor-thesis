@@ -14,21 +14,23 @@ Dibbi first assigns dynamically generated \emph{precursors} to the measured prec
 
 \subsection{Assigning precursor mass}
 
-The protein is first completely digested into peptides that are further undigestable; the protease of our choosing was trypsin, so we call these basal peptides \emph{tryptides}. As mentioned in the first chapter, a protease can sometimes miss a cleavage point, resulting in a peptie chain that is made from two (or more) contiguous basal tryptides connected with peptide bonds --- we call a chain of one or more tryptides a \emph{segment}. Finally, due to crosslinking with disulfide bridges, a \emph{precursor} is made out of one or more of these segments, joined with interpeptide disulfide bonds.
+At the start, the protein undergoes a complete in-silico digestion, producting basal peptides that can not be digested any further; the protease of our choosing was trypsin, so we call these basal peptides \emph{tryptides}. As mentioned in the first chapter, a protease can sometimes miss a cleavage point, resulting in a peptie chain that is made from two (or more) contiguous basal tryptides connected with a peptide bond. We call a chain of one or more tryptides a \emph{segment}. Finally, due to disulfide bridges crosslinking, a \emph{precursor} is made out of one or more segments connected with interpeptide disulfide bonds.
 
-There can be one or more DB connecting a segment to another segment, and there can also be intrapeptide DBs. Cysteines that do not partake in a DB are alkylated, meaning their mass is effectively higher by some configurable constant. In addition, some amino acid residues are sometimes modified, too, such as the methionine undergoing oxidation. The algorithm treats the latter as optional, or ``variable'' modifications.
+There can be one or more DB connecting a segment to another segment, and there can also be intrasegment DBs. Cysteines that do not partake in a DB are alkylated, meaning their mass is effectively higher by some configurable constant. In addition, certain amino acid residues are sometimes modified, too, such as the methionine undergoing oxidation. The algorithm treats the latter as optional, or ``variable'' modifications.
 
-From the point of view of this part of the algorithm, it matters not where the individual DBs are located, or which exact methionines are modified, because in individual variations are not distiguishable on the basis of precursor mass. Thus, the precursors in the output of the algorithm only include the information about which segments are present, how many DBs there are --- always at least the number of segments minus 1 --- and how many of each kind of variable modifications there are. This information is passed to the next stage of the program.
+From the point of view of this part of the algorithm, it matters not where the individual DBs are located, or which exact methionines are modified, because the individual variations are not distiguishable on the basis of precursor mass. Thus, the precursors in the output of the algorithm only include the information about \textbf{which segments are present}, \textbf{how many DBs there are} --- always at least the number of segments minus 1 --- and how many of each kind of variable modifications there are. This information is passed to the next stage of the program.
 
-As for the inner workings of the algorithm, each measured precursor mass is saved into the global variable \(TARGET\), and then the \textsc{FindPrec} function is caled with increasingly higher and higher starting points; in this way, every possible precursor match for the target is found. The \textsc{FindPrec} function is implemented using the divide and conquer technique (see \Cref{alg:findprec}). The function keeps a list of \Var{Selected} segments, and a pointer to \Var{TRYPTIDES}, and in each interation, it tries to
+Given a target mass to which we want to assign a precursor, the algorithm first chooses a beginning of the first segment. After that the \textsc{FindPrec} function iteratively branches out to search the problem space for precursors that have a theoretical mass within an error boundary around the target mass. The precursor is built segment by segment, and the individual segments are build tryptide by tryptide, both from left to right. In each iteration, the following branching points are tried out:
 
 \begin{enumerate}
 	\item Combine the possible modifications and DBs in such a way that the \Var{Selected} segments with the modifications have the correct mass, using the \textsc{Combine} function (see \algref{alg:findprec}{alg:findprec:combinations}). \textsc{Combine} implements a divide-and-conquer algorithm for a modified subset sum problem, in which assignments that are within some error boundary of the target are also considered a valid solution.
-	\item Elongate the ``current'' segment it is building by adding the current tryptide to it (see \algref{alg:findprec}{alg:findprec:elongate}, and also the whole \Cref{alg:elongate}).
-	\item End the current segment (effectively simulating a protease cleavage just before the current tryptide) and begin a new one that begins on the current tryptide, or on some tryptide after it. See \algref{alg:findprec}{alg:findprec:end}, and the whole \Cref{alg:newseg}.
+	\item Elongate the current segment by adding the current tryptide to it (see \algref{alg:findprec}{alg:findprec:elongate}, and also the whole \Cref{alg:elongate}).
+	\item End the current segment (effectively simulating a protease cleavage just before the current tryptide) and begin a new one that begins on the current tryptide or later. See \algref{alg:findprec}{alg:findprec:end}, and the whole \Cref{alg:newseg}.
 \end{enumerate}
 
-As we can see, the pointer to tryptides only ever moves to the right. This is a simple method of symmetry breaking.
+The fact taht the precursors (and their segments) are built strictly from left to right is a simple form of symmetry breaking --- that is, not generating the multiple equivalent symmetrical solutions. Some further optimizations were added as well, mainly to prevent traversing a branch once we learn it can not provide any more solutions. The used protease is configurable, as well as the amino acid modifications and the maximum number of segments we want the found precursors to have.
+
+% TODO Jak vyadá typický výstup? Co se z něj teda dozvím?
 
 \begin{algorithm}
 	\begin{algorithmic}
@@ -75,7 +77,7 @@ As we can see, the pointer to tryptides only ever moves to the right. This is a 
 		\State $\mathit{tryptide} \gets$ the $I$-th tryptide from the list $\mathit{TRYPTIDES}$
 		\State $\mathit{mass'} \gets$ the mass of $\mathit{tryptide}$ added to $\mathit{Mass}$
 		\State $\mathit{cys'}\gets$ the number of cys in $\mathit{tryptide}$ added to $\mathit{Cys}$
-		\Decl{cys'}{lower \var{cys'} by one if \Var{Open} is true, using a cys to close the bond}
+		\Decl{cys'}{lower \Var{cys'} by one if \Var{Open} is true, using a cys to close the bond}
 		\State $\mathit{open'} \gets$ False if this tryptide had any cysteines, otherwise $\mathit{Open}$
 
 		\nb{Call the original function}
@@ -100,10 +102,10 @@ As we can see, the pointer to tryptides only ever moves to the right. This is a 
 		\nb{The new bond is waiting to get ``closed'' by a cys in the next run}
 		\State $\mathit{open'} \gets$ True
 
-		\nb{Finally, start the new segment, try all possible starting points}
+		\nb{Finally, branch out: start a new segment from all possible starting points}
 		\For{all possible beginings of the next segment from $I + 1$ onward}
 		\State $i' \gets$ the next beginning
-		\State $S \gets$ \Call{AddSegment}{$i', selected', \mathit{mass'}, segments' cys', \mathit{open'}$}
+		\State $S \gets$ \Call{FindPrec}{$\mathit{i'}, \mathit{selected'}, \mathit{mass'}, \mathit{segments'}, \mathit{cys'}, \mathit{open'}$}
 		\State return the list $S$
 		\EndFor
 
@@ -115,25 +117,78 @@ As we can see, the pointer to tryptides only ever moves to the right. This is a 
 
 \subsection{Assigning fragment mass}
 
+Our task now is to assign in-silico generated precursor fragments to the peaks from the spectra. The quality of these assignments will later be used to score the precursor matches and ultimately to find out some information about the position of DBs in the protein.
+
+Before the main of this stage of the program, there is an in-between processing step that takes a precursor from the precursor-matching stage, and generates all possible \emph{variants} it could represent. A \emph{variant} is a set of segments with precisely defined DB crosslinks --- that differentiates it from a precursor (which is the output of the previous stage), as precursor only holds information about the number of DBs, but not their positions.
+
+Similarly to how precursors are constructed from crosslinked segments, and the segments from basal tryptides, fragments can also be broken down to smaller pieces; we call them \emph{cuts}. A \emph{cut} is a part of a precursor segment; it never spanns more than one segment. All of the fragment cuts form a connected subgraph in the variant graph.
+
+A rough outline of the algorithm can be seen in \Cref{alg:fragment}. At the start, a beginning is chosen for the first cut of the fragment. In further iterations of the main function, the algorithm branches out. Before we describe the braching, we have to explain the notion of \emph{pivots}. Imagine the algorithm is building a cut, residue by residue, and it encouters a cysteine connected with a DB to another segment in the variant. When the algorihm makes the decision to keep the bond intact, the other cysteine surely will have to be in the final fragment, possibly with some other neighbouring residues from its segment. The cysteine is thus added to the list of \emph{pivots}, and when the current cut is ended, the algorithm jumps to the next pivot from the list and builds a new cut around them.
+
+In this way, the algorithm can jump back and forth between segments, following the directions of DBs in the variant, building cuts around cysteines, until it runs out of pivots, runs out of residues in the variant, or until its mass is too high. The algorithm keeps track of all residues that are part of the current fragment, in order not to add any residue twice by adding cuts with nonempty intersection. Furthermore, the number of peptide bond and disulfide bond breaks is bounded, usually to be at most 1 or 2.
+
+In each iteration, the algorithm attempts to do all of the following:
+
 \begin{enumerate}
-	\item V zásadě to samé, jako v part 1, ale ještě o level kombinatoricky výbuchovatější.
-	\item V každém spektru procházíme všechny naměřené hmoty fragmentů a snažíme se k nim in-silico vygenerovat fragment z nějakého z proteinů, které jsme k danému spektru vybrali v první části.
-	\item Konkrétní řešení je zase rekurzivní a opět podobné subset sum — procházíme postupně peptid a rozhodujeme se, jestli uděláme break, nebo ne.
+	\item Try to combine the masses of the selected cuts and some of the variable modifications to obtain a fragment with a mass that is within the error boundary around the target mass. In case of a success, add this fragment (that is, this combination of cuts and modifications) to a list of solutions.
+	\item If the current residue is a cysteine partaking in a DB that we have not seen yet, branch out. Break the bond in one branch, adding assymetric modifications to both of the cysteines, and keep the bond intact in the other, adding a new \emph{pivot} to the list of pivots.
+	\item Elongate the current cut by adding the next residue to it. The ``next residue'' is simply the next residue in the segment from which the cut is made. If there is no ``next residue'' in this segment, end this cut, and jump to the next pivot. If there is no pivot to jump to, end this branch of the algorithm.
+	\item End this cut prematurely (in the middle of a segment), that is, simulate a peptide bond dissociation in the precursor. Jump to the next pivot, if there is any, or end this branch of the algorithm.
 \end{enumerate}
 
-Problémy jsou následující.
 
-\begin{enumerate}
-	\item V první části nevíme, kde přesně jsou můstky a modifikace, jen kolik jich je dohromady
-	\item Nevíme, jakou charge měl fragment, který danou stopu vygeneroval, musíme tedy vyzkoušet generovat fragmenty pro všechny charge (1 až charge prekurzoru, tu známe).
-	\item Vznikají nám neutral lossy, ale nemusí.
-	\item Mohou se breakovat SS, ale nemusí. Pokud se breaknou, existují čtyři možnosti, co tam po SS můstku zbylo.
-	\item Fragmenty mohou vznikat dvěma breaky — můžeme tedy mít kombinované b+y fragmenty.
-	\item Opět (prakticky) nemůžeme použít dynamické programování.
-	\item (obrázek nějakého složitého fragmentu?)
-\end{enumerate}
+\begin{algorithm}
+	\begin{algorithmic}
+		\Function{FragFind}{$I, \mathit{BreaksLeft}, \mathit{ValidEndRange}, \mathit{Mass}, \mathit{Pivots}$}
 
-Níže bude opět pseudokód a popis algoritmu podobbný tomu v části 1.
+		\Decl{solutions}{an empty list}
+
+		\Decl{can end}{the end would not be premature, or \Var{BreaksLeft} $> 0$}
+		\If{\Var{I} is in \Var{ValidEndRange}, and also \Var{can end}}
+
+		\If{can \textsc{Combine} the cuts with some mods to match \Var{TARGET}}
+		\Decl{solutions}{the current \Var{solutions} with any of the new ones added}
+		\EndIf
+
+		\If{there is some pivot $\mathit{p}$ in $\mathit{Pivots}$}
+		\Decl{startrange, endrange}{the valid cut range around \Var{p}}
+		\Decl{pivots'}{\Var{pivots} with the pivot \Var{p} removed}
+		\Decl{breaks'}{\Var{BreaksLeft}, possibly one less if the end is premature}
+		\For{every valid cut start in \Var{startrange}}
+		\Decl{S}{\Call{FragFind}{$\mathit{start}, \mathit{breaks'}, \mathit{endrange}, \mathit{Mass}, \mathit{pivots}$}}
+		\Decl{solutions}{the current \Var{solutions} concatenated to \Var{S}}
+		\EndFor
+		\EndIf
+
+		\EndIf
+
+		\If{the \Var{I}-th residue is a cys partaking in a DB we have not seen yet}
+
+		\nb{Break the bond...}
+		\If{we have some breaks to spare}
+		\State add the current cysteine to the broken bond counter, then...
+		\Decl{mass'}{the current \Var{Mass} added to the mass of the \Var{I}-th residue}
+		\Decl{S}{\Call{FragFind}{$I + 1, \mathit{BreaksLeft} - 1, \mathit{ValidCutRange}, \mathit{mass'}, \mathit{pivots}$}}
+		\Decl{solutions}{the current \Var{solutions} concatenated to \Var{S}}
+		\EndIf
+		\nb{...or keep it intact}
+		\Decl{pivots'}{add the other end of the bond to \Var{Pivots}}
+		\Decl{mass'}{the mass of the bond, $\ce{H2}$, subtracted from \Var{Mass}}
+		\Decl{S}{\Call{FragFind}{$I + 1, \mathit{BreaksLeft}, \mathit{ValidCutRange}, \mathit{mass'}, \mathit{pivots'}$}}
+
+		\Decl{solutions}{the current \Var{solutions} concatenated to \Var{S}}
+
+		\Else
+		\nb{Continue adding to this cut}
+		\Decl{mass'}{the current \Var{Mass} added to the mass of the \Var{I}-th residue}
+		\Decl{S}{\Call{FragFind}{$I + 1, \mathit{BreaksLeft}, \mathit{ValidCutRange}, \mathit{mass'}, \mathit{pivots}$}}
+		\Decl{solutions}{the current \Var{solutions} concatenated to \Var{S}}
+		\EndIf
+		\State return the list \Var{solutions}
+		\EndFunction
+	\end{algorithmic}
+	\caption{A very high-level overview of the basic functionality of the fragment matching algotihm.}\label{alg:fragment}
+\end{algorithm}
 
 \section{Precursor scoring and result visualisation}
 
