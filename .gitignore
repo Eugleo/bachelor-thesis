@@ -17,6 +17,8 @@
 *.cb2
 .*.lb
 
+thesis.pdf
+
 ## Intermediate documents:
 *.dvi
 *.xdv
