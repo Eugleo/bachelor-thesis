@@ -1,25 +1,6 @@
 
 \chapwithtoc{Introduction}
 
-\begin{enumerate}
-  \item Existují proteiny, jsou klíčové pro funkci organismu, obstarávají většinu procesů v něm. Funkce proteinu je závislá na jejich struktuře, a ta je závislá mimo jiné i na nekovalentních interakcích jednotlivých aminokyselin. Tyto interakce probíhají přes vodíkové nebo disulfidické můstky.
-  \item Vědět, kde tyto můstky jsou, může pomoci molecular dynamic simulations pro omezení vyhledávacího prostoru, propř. určitě i jiným věcem.
-  \item Metod určování pozic SS můstků existuje spousta. Jedna z nich využívá tandemovou hmotnostní spektrometrii v kombinaci s kapalinovou chromatografií. To vše na částečně alkylovaném proteinu, který je rozložený trypsinem.
-  \item V této práci jsme zvolili podobný postup (to jest LC-MSMS na tryptických peptidech), ale přidali jsme k němu in-silico matchování (di)peptidů na naměřená spektra pomocí novel divide and conquer metody. Tato metoda využívá toho, že dipeptidy mají specifický fragmentační pattern a navíc mají i jinou prekurzorovou hmotu.
-  \item Tuto metodu ověřujeme na několika naměřených proteinech, a máme svkělé výsledky (hopefully).
-\end{enumerate}
+The study of protein structure and function is key to many areas in the modern science. Disulfide bonds play an important role in stabilising the protein structure~\cite{wedemeyer2000disulfide}, and can directly or indirectly influence its function~\cite{nagahara2011intermolecular}. Lately, mass spectrometry has become a popular tool in disulfide bond identification and mapping in proteins with known sequence. While there exist computational methods that are able to automatically indentify simple crosslinked pairs of peptides in mass spectrometric data~\cite{lakbub2018recent, liu2014facilitating}, indentification of more complex clusters of interlinked peptides has proved to be challenging, and researches often have to resort to labour intensive partial reduction methods~\cite{wu1997novel, li2013disulfide}.
 
-
-% Introduction should answer the following questions, ideally in this order:
-% \begin{enumerate}
-% \item What is the nature of the problem the thesis is addressing?
-% \item What is the common approach for solving that problem now?
-% \item How this thesis approaches the problem?
-% \item What are the results? Did something improve?
-% \item What can the reader expect in the individual chapters of the thesis?
-% \end{enumerate}
-
-% Expected length of the introduction is between 1--4 pages. Longer introductions may require sub-sectioning with appropriate headings --- use \texttt{\textbackslash{}section*} to avoid numbering (with section names like `Motivation' and `Related work'), but try to avoid lengthy discussion of anything specific. Any ``real science'' (definitions, theorems, methods, data) should go into other chapters.
-% \todo{You may notice that this paragraph briefly shows different ``types'' of `quotes' in TeX, and the usage difference between a hyphen (-), en-dash (--) and em-dash (---).}
-
-% It is very advisable to skim through a book about scientific English writing before starting the thesis. I can recommend `\citetitle{glasman2010science}' by \citet{glasman2010science}.
+In this thesis we first review the popular proteomic mass spectrometry methods and experiment design choices, focusing on those that are relevant for disulfide bond characterisation. Then we mention some challenges in sample preparation and data analysis regarding the study of disulfie bond linkages. Finally we propose a new command-line program for differential disulfide bond characterisation called \emph{Dibby}. It makes use of the \emph{divide and conquer}~\cite{smith1985design} and \emph{branch and bound}~\cite{boyd2007branch} techniques to indentify even the more complicated peptides with closely-spaced interlinked cysteines, or nested disulfide bonds. Furthermore, data from reduced samples, without any disulfide bonds, are used to lower the false discovery rate. We evaluate the program on measured and in-silico generated datasets, concluding that it poses a valid research direction in computation disulfide bond mapping.
