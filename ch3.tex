@@ -1,8 +1,10 @@
 \chapter{Results and discussion}
 
-\section{False positive assignments have lower scores}
+In this chapter we present the results of DB characterisation in two measured proteins, and one in-silico generated dataset. We also provide some supporting data justifying our choice of scoring metric and the design of the matching algorithms. Finally, we evaluate the results, concluding that many DBs are successfuly identified, although there are many false positive fragment matches.
 
-In the proteins we analysed, the theoretical positions of DBs are known. We call a fragment (and by extension, the whole variant) that contradicts the knowledge about DB positions a \emph{bad} fragment. We have evaluated our variant scoring metric on four different datasets (LYS, LIP, GENOVA, and BSA), separately on good and bad variants; the results are presented on \Cref{fig:scoring-metric}. A clear difference between the median variant score of the bad and the good variants can be seen.
+\section{Dibby scores correctly reflect false positive fragment assignments}
+
+In the proteins we analysed, the theoretical positions of DBs are known. We call a fragment (and by extension, the whole variant) that contradicts the knowledge about DB positions a \emph{bad} fragment. We have evaluated our variant scoring metric on four different datasets (LYS, LIP, GENOVA, and BSA), separately on good and bad variants; the results are shown on \Cref{fig:scoring-metric}. A clear difference between the median variant score of the bad and the good variants can be seen.
 
 \begin{figure}
   \centering
@@ -10,16 +12,16 @@ In the proteins we analysed, the theoretical positions of DBs are known. We call
   \caption{Scoring metric evaluation on datasets from four different samples. Individual datapoints represent different assigned variants, that are grouped based on whether they contradict expert knowledge about DB positions. The boxplots illustrate that the separation is usually relatively good, but as we can see from the datapoints, there are still a lot of (in theory) nonexsting variants with a high score. This can partly be attributed to DB scrambling. The lack of data in the LIP sample is discussed in the text. (BSA = bovine serum albumin, LYS = lysosyme, LIP = lipase, GENOVA = an in-silico generated ovalbumin dataset)}\label{fig:scoring-metric}
 \end{figure}
 
-\section{Some DBs were successfully identified}
+\section{Dibby identifies existing DBs}
 
-A complete DB analysis was performed on three proteins, namely LYS, LIP, and GENOVA\@. The analysis was initially run with vanilla settings. If there had been a strong evidence for a particular DB in the RAT data, it was deemed to be prone to generating false positive signals. Consequently, its weight has been adjusted to 0.1, or 0.8, depending on the strength of its RAT evidence, and the analysis was run again.
+A complete DB analysis has been performed on three proteins, namely LYS, LIP, and GENOVA\@. The analysis was initially run with vanilla settings. If there had been a strong evidence for a particular DB in the RAT data, it was deemed to be prone to generating false positive signals. Consequently, its weight has been adjusted to 0.1, or 0.8, depending on the strength of its RAT evidence, and the analysis was run again.
 
 The results from the second run of the analysis can be seen on the following figures: \Cref{fig:lys} (LYS), \Cref{fig:lip} (LIP), and \Cref{fig:genova} (GENOVA). The top row shows data from RAT samples, the bottom shows data from AT samples, the left column shows the theoretical positions of the cysteine alkylations and disulfide bonds, and the right column shows the aggregated evidence. Alkylation evidence is illustrated by a border around the cysteine.
 
-As is apparent from the images, Dibby generates a lot of false positive signal. However, the scoring and weighting of the evidence helps immensely, and some DBs are clearly identifiable; three in the LYS sample (of the four total DBs), one in the LIP sample (of the three total DBs), and one in the GENOVA sample (the only DB that is present).
+As is apparent from the images, Dibby generates a lot of false positive signal. However, the scoring and weighting of the evidence helps immensely, and some DBs are still clearly identifiable; three in the LYS sample (of the four total DBs), one in the LIP sample (of the three total DBs), and one in the GENOVA sample (the only DB that is present).
 
 
-\paragraph{Lysosyme} Three of the four DBs have been identified successfully (\Cref{fig:lys}). The last DB cysteine pair was seen only in 7 good fragments, compared for example to the 2,534 good fragments of the bond \((5, 126)\). In other words, its signal is very low in comparison with the other bonds. We are not sure what caused this stark disparity, and the causes should be more deeply investigated in the future. The evidence for the bond \((75, 93)\) is not as strong as for the other two, relative to the evidence for alkylations of the respective cysteines. The bond is objectively hard to identify, because there is no tryptic cleavage point between the cysteines. The fact that Dibby has been able to identify this bond foreshadows the power of its general assignment algorithm.
+\paragraph{Lysosyme} Three of the four DBs have been identified (\Cref{fig:lys}). The evidence for the last DB has been seen in only 7 good fragments, compared for example to the 2,534 good fragments of the bond \((5, 126)\). We are not sure what caused this stark disparity, and the causes should be more deeply investigated in the future. The evidence for the bond \((75, 93)\) is not as strong as for the other two, relative to the evidence for alkylations of the respective cysteines. \((75, 93)\) is objectively hard to identify, because there is no tryptic cleavage point between the cysteines. The fact that Dibby has been able to identify this bond foreshadows the power of its general assignment algorithm.
 
 \begin{figure}
   \centering
@@ -32,7 +34,7 @@ As is apparent from the images, Dibby generates a lot of false positive signal. 
 \begin{figure}
   \centering
   \includegraphics[width=1\linewidth]{img/genova.pdf}
-  \caption{The evidence for positions of DBs and alkylations in in-silico generated ovalbumin, weighted by variant score, and normalised. Although there are some false positives, leading mainly to cysteine 119, the only confirmed bidirectional bond is the correct one: \((72, 119)\). }\label{fig:genova}
+  \caption{The evidence for positions of DBs and alkylations in in-silico generated ovalbumin, weighted by variant score, and normalised. Although there are some false positives, the only confirmed bidirectional bond is also the correct one: \((72, 119)\).}\label{fig:genova}
 \end{figure}
 
 \paragraph{Lipase} Only one of the three DBs has been identified in the LIP sample (\Cref{fig:lip}). Interestingly, we have identified exactly zero variants containing the cysteines 271 and 295, alkylated or otherwise. To test whether this had been caused by a problem in the data or the algorithm, we have ran a MSGF+~\cite{kim2014ms} analysis on the LIP samples (and later on the other samples as well); the comparison with results from Dibby is in \Cref{tbl:measurements}. We can see that even MSFG+, a state of the art proteomic database search tool, had problems with LIP data, suggesting an unknown issue occured during the sample preparation, rendering most of the LIP data unuseable.
@@ -56,7 +58,7 @@ As is apparent from the images, Dibby generates a lot of false positive signal. 
     BSA RAT                                              & 14242                           & 1723                                                                   & 2684                              & 22133 &     \\ \bottomrule
   \end{tabular}
 
-  \caption{Comparison of Dibby with MSGF+, a state of the art database search tool for proteomics. MSGF+ can only identify peptides that are not cross-linked, or ``simple'' peptides; for this reason, we list the number of Dibby's simple assignments in addition to the total number of its assignments. Generally, Dibby identifies a little bit more precursors than MSGF+, most of which are probably false positives. There are close to 0 false negatives, however. There is clearly a problem with lipase data; MSGF+ identified 16 times more precursors in the LYS RAT sample, although the number of measured scans in the mgf file is comparable with LIP RAT.}\label{tbl:measurements}
+  \caption{Comparison of Dibby with MSGF+, a state of the art database search tool for proteomics. MSGF+ can only identify peptides that are not cross-linked, or ``simple'' peptides; for this reason, we list the number of Dibby's simple assignments in addition to the total number of its assignments. Generally, Dibby identifies a little bit more simple precursors than MSGF+, most of which are probably false positives. On the other hand, there are close to 0 false negatives. There is clearly a problem with lipase data; MSGF+ identified 16 times more precursors in the LYS RAT sample than in LIP RAT, although the number of measured scans in the mgf file is comparable between these two samples.}\label{tbl:measurements}
 \end{table}
 
 \begin{figure}
@@ -65,40 +67,20 @@ As is apparent from the images, Dibby generates a lot of false positive signal. 
   \caption{The evidence for positions of DBs and alkylations in in-silico generated ovalbumin, weighted by variant score, and normalised. No fragments containing cysteines 271 and 295 have been assigned (neither in alkylated form, nor as a part of any disulfide bond); this leads us to believe that a part of the data has been lost, or otherwise damaged.}\label{fig:lip}
 \end{figure}
 
-To conclude, the scoring metric separates good variants from the bad ones rather well. With the help of the scoring system, Dibby managed to sift through the large number of false positive assignments, and successfully identified most of the true DBs in the LYS and GENOVA samples. One true DB has even been identified in LIP, despite the problems in the LIP dataset.
+To conclude, the scoring metric separates good variants from the bad ones rather well. With the help of the scoring system, Dibby managed to sift through the large number of false positive fragment assignments, and successfully identified most of the true DBs in the LYS and GENOVA samples. One true DB has even been identified in LIP, despite the problems in the LIP dataset.
 
 
 \section{Discussion}
 
-It is impossible to directly test how well the scoring metric (\Cref{sec:scoring}) separates true positives from false positives, because we do not know which peaks were generated by which fragments. However, we do know where the DBs are located in the protein, in theory. We will call a fragment (and by extension, the whole variant) that contradicts our knowledge about DB position a \emph{bad} fragment. In order for the scoring metric to be useful, bad fragments and variants should in general have a lower score than good ones.  In order for the scoring metric to be useful, bad fragments and variants should in general have a lower score than good ones.
+In the discussion below, we do not consider the results obtained from the LIP samples, because --- as we have shown --- there has been an unknown issue during the measurements, rendering the data unreliable.
 
-We have found that the metric in general satisfactorily spearates the ``good'' variants from the bad ones, nonetheless there are still many ``bad'' variants with a high score. In the in-silico generated GENOVA dataset the upper tail end of the bad variants ends much lower than it does in the other samples. We interpret this as follows: the upper part of the tail can be attributed to DB scrambling, a process that occured duting the preapartion of the real-world datasets, but didn't occur during the generation of GENOVA. In other words, the high-scoring bad variants should not exist in theory, but they were observed  in the data with great condifence, and scored appropriately. On the other hand, the lower end of the tail are probably false positives probably caused by imprefections in our matching and scoring system
+\paragraph{Scoring} In order for the scoring metric to be useful, bad fragments and variants should generally have a lower score than good ones, presuming the measured data correlates with the expert knowledge about DB positions. We have indeed found that the metric satisfactorily spearates the good variants from the bad ones (see \Cref{fig:scoring-metric}), nonetheless there are still many bad variants with a high score, especially in the BSA and LYS datasets. A possible explanation is that although DBs that contradict expert knowledge should not be present in the data \emph{in theory}, due to DB scrambling they \emph{are} present; subsequently, variants containing these bonds receive a high score because they match the measured data well, but are labeled as bad during our evaluation of the scoring metric (\Cref{fig:scoring-metric}). This hypothesis is further supported by the absence of the high-scoring bad variants from the generated GENOVA dataset, in which no DB scrambling has occured.
 
-%TODO Přidat lepší discussion, podle Mirka.
+% TODO Zmínit BSA, např. že jsme ho odignorovali
 
-% \chapter{Results and discussion}
 
-% \section{Graphics and figure quality}
+\paragraph{DB characterisation} Despite the strong signal from false positive matches, and the complications resulting from DB scambling, most of the DBs present in LYS (\Cref{fig:lys}) and GENOVA (\Cref{fig:genova}) have been identified. Especially important is the LYS DB \((75, 93)\), an intrapeptide DB that would be hard to identify with other methods. This demonstrates the flexibility and raw matching power of the algorihm. However, more work needs to be done to lower the false discovery rate. After improvements in this area, and potentially some changes to the data preparation protocol, Dibby could be used to assist researchers with DB mapping in proteins.
 
-% \subsection{Visualize all important ideas}
-% The set of figures in your thesis should be comprehensive and complete. For all important ideas, constructions, complicated setups and results there should be a visualization that the reader can refer to in case the text does not paint the `mental image' sufficiently well. At the bare minimum, you should have at least 3 figures (roughly corresponding to the 3 chapters) that clearly and unambiguously show:
+\paragraph{Manual analysis} In addition to the visualisations, a csv file with the fragment assignments is generated by Dibby. This enables researchers to perform detailed manual analysis based on data from Dibby's matching algorithms, or to manually check the evidence for a speicifc DB to verify the results. In the future, the match data could be used to perform automatic labeling of matched fragments, including complex internal fragments with multiple modifications and disulfide bonds, a task that is as of now still not solvable by any tool.
 
-% \begin{enumerate}
-%   \item the context of the problem you are solving, optionally with e.g.~question marks and exclamation marks placed to highlight the problems and research questions
-%   \item the advancement or the distinctive property of your solution, usually in a benchmark plot, or as a clear demonstration and comparison of the results.
-% \end{enumerate}
-
-% \subsection{Make the figures comprehensible}
-% The figures should be easily comprehensible. Surprisingly, that requires you to follow some common ``standards'' in figure design and processing. People are often used to a certain form of the visualizations, and (unless you have a very good reason) deviating from the standard is going to make the comprehension much more complicated. The common standards include the following:
-
-% \section{What is a discussion?}
-% After you present the results and show that your contributions work, it is important to \emph{interpret} them, showing what they mean for the more general public.
-
-% Separate discussion sections are common in life sciences where ambiguity is common and intuition is sometimes the only thing that the authors have; exact sciences and mathematicians do not use them as often. Despite of that, it is nice to precisely set your output into the existing environment, answering:
-% \begin{itemize}
-%   \item What is the potential application of the result?
-%   \item Does the result solve a problem that other people encountered?
-%   \item Did the results point to any new (surprising) facts?
-%   \item Why is the result important for your future work (or work of anyone other)?
-%   \item Can the results be used to replace (and improve) anything that is used currently?
-% \end{itemize}
+In conclusion, Dibby has managed to identify most DBs from the analysed dataset, including one intrapeptide bond. We have also shown the importance of protease choice during the sample preparation phase by identifying variants that possibly resulted from DB scrambling during tryptic digestion. Some of Dibby's pain points were highlighted, suggesting a topic for future research.
