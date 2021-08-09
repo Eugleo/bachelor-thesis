@@ -1,28 +1,14 @@
-\chapter{Tandem mass spectrometry for protein analysis}\label{chap:msms}
+\chapter{Tandem mass spectrometry data for disulfide bond analysis}
 
-% TODO To následující by bylo možná dobré intro, nějak prožezané do pár odstavců.
+In the introduction we have established that disulfide bonds (DB) are important to protein function, structure, and to enzyme regulation. We have also shown that information about their positions can be used to optimise ab initio folding methods. We hope that these are enough to persuade the reader that studying the DB positions in a protein is a worthwhile task, although a complicated one.
 
-Proteins are amino acid biopolymers that take part in most natural processes in living organisms. Among other things, they are vital for cell growth, reproduction, metabolism, and movement. [citace] Proteins are also a frequent target of medicine, because they play a key role in most diseases [citace nějakého proteinového léku].
+There are many methods aiming to determine the positions of DBs; the most popular is tandem mass spectrometry (MS/MS). MS/MS is a popular analysis technique, often used in proteomics, and specifically DB mapping, for its accuracy, sensitivity and speed.~\cite{gorman2002protein}
 
-Protein function is highly dependent on its 3D structure [citace], and as was shown by Anfinsen [citace], the information about the structure is in turn encoded in the sequence of the protein.
+In MS/MS analysis (or more accurately its bottom-up variant), the protein is eventually fragmented to smaller charged peptides whose mass to charge ratio (\(m/z\)) is measured with atomic precision. Multiple sets of \emph{fragmentation spectra} are obtained, each coming from a longer peptide with a specific \(m/z\) value that is called the \emph{precursor}. While in proteomcs the task is usually to identify the original protein from the fragments, during DB mapping it is known which protein the fragments come from, and instead the task is to determine the positions of its DBs.
 
-Protein folding is driven by natural biophysical forces which makes it hard to properly recreate \emph{in silico}, especially when there is no homologous protein with known structure [citace]; this problem is called \emph{de novo} folding.
+The experiment can be designed in a way that keeps the DBs intact, resulting in the occurence of crosslinked peptides with specific fragmentation signatures. There are multiple analytical methods, both manual and computational, that try to discover these fragmentation spectra and use them to determine the positions of the DBs in the protein. Other methods choose to dissociate the DBs during the fragmentation, a process that leads to another kind of specific fragmentation signatures.
 
-Techniques for \emph{de novo} folding rely mostly on molecular dynamic simulations. These approaches are often very performance-intensive (?), because they are effectively optimising a complicated scoring function a huge multidimensional problem space. [citace] Any information we have about the structure can be thus very heplful in reducing the problem space when supplied to the algorithm, making the computations faster and more accurate. One type of such information are the positions of disulphide bridges.
-
-Disulphide bridges (DB) in proteins can be formed between the sulfhydryl groups of two cysteines during a thiol–disulfide exchange reaction catalyzed by thioredoxin [citace] In vivo they are oftentimes essential to correct protein folding, because they stabilise the final structure [citace] The knowledge of DB positions can be used, among other things, to constrain the molecular dynamic simulations, as mentioned earlier. In addition, the knowledge of which cysteines do \emph{not} partake in a DB is important, too.
-
-Non-interlinked cysteines have an important pH-regulating function within proteins [citace] (a něco dalšího ještě?). Consequently, cysteines are scarce compared to other amino acids [citace], but they are usually very well conserved during evolution [citace].
-
-There are many methods aiming to determine the positions of DBs, on of them is tandem mass spectrometry combined with liquid chromatography (LC-MSMS). LC-MSMS is a popular general analysis technique, often used in proteomics for its accuracy and relative straightforwardness of the experiments (?) [citace].
-
-In LC-MSMS, the protein is eventually fragmented to smaller charged peptides whose mass to charge ratio (\(m/z\)) is measured with atomic precision. The whole experiment can be designed in a way that the DBs are preserved which results in the occurence of \emph{breptides} with specific \(m/z\) fragmentation signatures. Computational analysis can help us discover these fragmentation spectra and determine the original positions of the DBs in the protein.
-
-% TODO ... a tohle jsme si dali za task; deteminovat pozici DBs z hmotnostních spekter.
-
-% TODO Bridgetid je interlikend peptide, s 2+ segmenty.
-
-% TODO V následujících několika sekcích si vysvětlíme principy hmotností spektrometrie, s focusem na přístupy a poznatky, které jsou relevantní pro naši práci. Kde to je možné, tam se odvoláváme na common přístupy a srovnáváme je s našimi konrétními potřebovami v kontextu tohoto tasku. Na konci této kapitoly formulujeme na základě této teorie formulujeme konkrétní problém a jeho přibližnou komplexitu.
+In the next few sections we will explain the principles behind mass spectrometry, putting the focus on methods and techniques that are relevant to disulfide bond analysis. Where possible, we compare multiple methods and state their tradeoffs in the context of our work. We also list some of the current approaches to DB mapping, noting their respective strengths and weaknesses. At the end of this chapter, we reformulate the task in more formal terms and roughly approximate its computational complexity. The next chapter, and indeed the rest of this thesis, is dedicated to the description and evaluation of our DB characterisation program, Dibby. The first topic we discuss is sample preparation, an important prerequisite in bottom-up mass spectrometric analysis; the protein needs to be cleaved to smaller peptides before it is analysed and fragmented.
 
 
 \section{Sample preparation}\label{sec:trypsin}
@@ -31,7 +17,7 @@ In LC-MSMS, the protein is eventually fragmented to smaller charged peptides who
 
 To prepare the protein for the analasis, it needs to be proteolyticaly cleaved; trypsin, and, to a lesser extent, pepsin, are popular choices. Trypsin is a serine protease with very high specificity which makes it very useful for mass spectrometry analyses, because the resulting peptides are predictable.
 
-Trypsin cleaves amino acid chains at the carboxyllic side of lysine and arginine, provided they are not followed by proline~\cite{olsen2004trypsin}. Lysine and arginine are both relatively abundant in most proteins which makes the tryptic digestion peptides --- or as we will call them, \emph{tryptides} --- reasonably sized for a mass spectrometry analysis~\cite{matthiesen2020trypticsize}. With that being said, the sample protein is not cleaved at every potential cleavage place; so called \emph{missed cleavages} do occur, and their frequency and position depend on neigbouring residues~\cite{gershon2014cleaved}, and experimental setup.
+Trypsin cleaves amino acid chains at the carboxyllic side of lysine and arginine, provided they are not followed by proline~\cite{olsen2004trypsin}. Lysine and arginine are both relatively abundant in most proteins which makes the tryptic digestion peptides --- or as we will call them, \emph{tryptides} --- reasonably sized for a mass spectrometry analysis~\cite{matthiesen2020trypticsize}. That being said, the sample protein is not cleaved at every potential cleavage place; so called \emph{missed cleavages} do occur, and their frequency and position depend on neigbouring residues~\cite{gershon2014cleaved}, and experimental setup.
 
 % TODO Trypsin je sice populární, bylo nicméně ukázáno že je aktivní při pH, které nědky způsobuje scrambling můstků [citace]. Tento jeho efekt je složité omezit, protože při nižším pH špatně štěpí [citace]. Někdy se proto ppoužívají jiné proteázy, například pepsin nebo [doplnit] [citace]. Pepsin je však zase méně specifický, takže když nemáme tight controlu nad digestion, vznikají nám příliš malé fragmenty, které je někdy složité detekovat[citace]. Jak přesně pepsin kontrolovat se často liší vzorek od vzorku [citace].
 
