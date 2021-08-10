@@ -25,7 +25,7 @@ Trypsin is a serine protease that cleaves amino acid chains at the carboxyllic s
 
 Relevant to our work is the following particularity of trypsin and some other proteases: they require a neutral-to-basic environment in order to become proteolytically active. In this environment the issue of DB scrambling arises~\cite{wu1997novel}; some of the DBs become dissociated, then the cysteines re-connect, but in different patterns than before. These scrambled bonds are diffucult to discern from the naturally occuring ones in the mass spectra. The issue can be mitigated by using a different protease for the digestion, such as pepsin, or thermolysin~\cite{sung2016evaluation}.
 
-In addition to digestion, in a general proteomic experiment the protein usually undergoes reduction that completely dissociates the DBs, and cysteine alkylation that prevents the cysteines from reassociating. However, in an experiment that aims to characterise cysteine linkages, these steps are skipped.
+In addition to digestion, in a general proteomic experiment the protein usually undergoes reduction that completely dissociates the DBs, and cysteine alkylation that prevents the cysteines from reassociating. However, in an experiment that aims to characterise cysteine linkages, only the alkylation is performed, and the present DBs are kept intact.
 
 \section{Liquid chromatography sample separation}\label{sec:lc}
 
@@ -42,7 +42,7 @@ The LC column is often directly connected to the mass spectrometer, which perfor
 
 Mass spectrometry is an analytical technique that has originally been used for studying small thermostable molecules. Nevertheless, with the advancements in soft ionization allowing proteins and other biomolecules to be analysed as well~\cite{fenn1989electrospray}, mass spectrometry has become an indispesable tool in proteomics research~\cite{collins2003human}.
 
-Mass spectrometry experiments can be either single-stage (MS) or tandem, the latter being denominated MS/MS, sometimes MS\textsuperscript{2}, and in teh cases of more than two subsequent analyses, MS\textsuperscript{\(n\)}). During single-stage experiments, the mass distribution of a polypeptide sample is determined. The more frequent of the two, tandem mass spectrometry is used to learn about certain structural features of a protein, including sequence and post-translational modifications.
+Mass spectrometry experiments can be either single-stage (MS) or tandem, the latter being denominated MS/MS, sometimes MS\textsuperscript{2}, and in the cases of more than two subsequent analyses, MS\textsuperscript{\(n\)}. During single-stage experiments, the mass distribution of a polypeptide sample is determined. The more frequent of the two, tandem mass spectrometry is used to learn about certain structural features of a protein, including sequence and post-translational modifications.~\cite{domon2006mass}
 
 \begin{figure}
   \centering
@@ -105,9 +105,15 @@ A mass analyser, sometimes equipped with a separate detector, measures the mass 
 
 \subsection{Precursor fragmentation}\label{sec:fragmentation}
 
-In MS/MS eperiments, once the mass spectrum of the initial sample is analysed and the MS\textsuperscript{1} data are acquired, \emph{precursors} are selected according to their mass, fragmented, and the fragments undergo yet another mass analysis, producing so called MS\textsuperscript{2} data. A short overview of different fragmentation techniques now follows.
+In MS/MS experiments, once the mass spectrum of the initial sample is analysed and the MS\textsuperscript{1} data are acquired, \emph{precursors} are selected according to their mass, and fragmented. The fragments undergo yet another mass analysis, producing so called MS\textsuperscript{2} data. In the section we present a short overview of the currently used fragmentation methods.
 
-When aiming to observe post-translational modifications and to preserve the volatile bond connecting the PTM to the peptide, electron-capture dissociation (ECD)~\cite{zubarev2000electron} or electron-transfer dissociation (ETM)~\cite{syka2004peptide} are preferred. In ECD a multiply positively charged precursor ion is hit by a beam of low-energy electrons, while in ETD the electron transfer is induced by negatively charged reagent ions, both of these ultimately leading to the creation of a radical cation and amine backbone bond cleavage, resulting in the creation of \(c\) and \(z\) ions, as illustrated on \Cref*{fig:fragment-types}. These methods require a multiply-charged precursor ion, because the absoption of the elector lowers the overall charge by 1, making singly charged precursor ions undetectable.
+When the goal of the experiment is to observe post-translational modifications (PTMs) and to preserve the volatile bond connecting the PTM to the peptide, electron-capture dissociation (ECD)~\cite{zubarev2000electron} or electron-transfer dissociation (ETM)~\cite{syka2004peptide} are preferred. Both methods use electron transfer to induce amine backbone bond cleavage that results in the creation of \(c\) and \(z\) ions, as illustrated on \Cref{fig:fragment-types}.
+
+During ETD, the DBs are dissociated, and the crosslinked precursor is split into its constituent peptides~\cite{liu2014facilitating}. These peptides appear as high-intensity peaks in the fragmentation spectra. The peaks which can be used to determine the peptide makeup of the orignal precursor, which causes ETD to be a popular fragmentation technique in DB mapping methods. However, if the precursor contains multiple cysteines, it may be hard to deduce which of them were paired together, especially if there were multiple DBs present. In this work we focus on methods that do not have this disadvantage.
+
+First of these methods is collision-induced dissociation (CID). CID accelerates the precursor ions, and makes them collide with neutral gas molecules, ultimately leading to their fragmentation. The dissociation process usually takes place at the more labile bonds, such as the ones connecting PTMs~\cite{quan2013cid}, or peptide bonds in the precursor backbone.\footnote{The fact that many PTM bonds are preferentially dissociated during CID is usually seen as unfortunate. However, in the case of DB mapping it simplifies the analysis, as the PTMs can be safely ignored, which reduces the combinatorial complexity of the problem.} CID produces \(b\) and \(y\) fragment ions (see \Cref{fig:fragment-types}); additionally, as a side-effect of the dissociation, a small neutral molecule sometimes breaks off of the fragment, lowering its total mass value without affecting its charge. This dissociated molecule is called a \emph{neutral loss}. In CID, the most common neutral losses are water and amonia.
+
+A specific variant of CID called the beam-type CID produces \emph{internal ions}, fragments that are generated by two (or more) bond cleavages during the fragmentation. Many of the internal ions begin with a proline~\cite{michalski2012systematic}, suggesting that the double cleavage event prefers some amino acids to others. As shown by \citet{michalski2012systematic}, ion-trap CID, the other CID variant, does not produce internal ions. Furthermore, ion-trap CID has limits regarding the containment of molecules below a certain mass threshold, leading to a mass cutoff~\cite{louris1987instrumentation}.
 
 \begin{figure}
   \centering
@@ -115,21 +121,15 @@ When aiming to observe post-translational modifications and to preserve the vola
   \caption{A singly positively charged peptide with annotated fragmentation types. Signature CID b/y ion fragments are marked with open circles, while the typical ECD and ETD c/z ion fragments are marked with filled circles. Image by~\citet{hart2014review}.}\label{fig:fragment-types}
 \end{figure}
 
-The fragmentation method we focus on in this work, however, is collision-induced dissociation (CID). It has a different fragmentation signature compared to the abovementioned methods (see \Cref*{fig:fragment-types}), and it doesn't preserve PTMs nearly as well as they do. Thankfully, DBs are not as labile as the bonds connecting PTMs to the peptide, and thus CID can be safely used to produce fragments from breptides [citace]. A similar fragmentation signature to CID can also be obtained by infrared multiphoton dissociation (IRMPD)~\cite{oomens2006gas}. Because IRMPD, and the related UV-MPD, do not require collision gasses to be present for the fragmentaion, they are well suited for analysers operating under high vacuum, such as FT-ICR\@.
+A similar fragmentation signature to CID can also be obtained by infrared multiphoton dissociation (IRMPD)~\cite{oomens2006gas}. Because IRMPD, and the related UV-MPD, do not require collision gasses to be present for the fragmentaion, they are well suited for analysers operating under high vacuum, such as FT-ICR\@.
 
-\subsubsection{Dissociation based on collision with neutral gas molecules}
+In 2007 a new fragmentation method based on beam-type CID has been devised, called the higher-energy C-trap dissociation (HCD)\@. The fragmentation spectra obtained from CID and HCD are very similar~\cite{michalski2012systematic}, nonetheless there is a key difference between the two methods: HCD combines the richer sequence information~\cite{xia2006ion} and lower mass cutoff of beam-type CID with the superior resolution capacity and accuracy of the orbitrap analyser. That is one of the reasons the data we use in this thesis come from HCD\@. In the next section we describe the common HCD fragmentation pathways, because they are crucial to the function of our DB mapping program.
 
-Two common fragmentation methods fall under the umbrella of fragmenting by collision with neutral gas: collision-induced dissociation (CID) and higher-energy C-trap dissociation (HCD). Both of them make the accelerated precursor ions collide with neutral gas molecules, ultimately leading to its fragmentation, but use different instrumentation to reach this goal, and have different performance characteristics in different contexts.
+\subsubsection{Fragmentation pathways in HCD}
 
-The principle of function is not the only thing these two methods have in common; they also share a big portion of the fragmentation signature~\cite{michalski2012systematic}. In both CID and HCD the dissociation process usually takes place at the more labile bonds, such as the ones connecting PTMs~\cite{quan2013cid}, or peptide bonds in the precrusor backbone, resulting in the generation of \(b\) and \(y\) fragment ions (see \Cref{fig:fragment-types}).\footnote{The fact that many PTM bonds are preferentially dissociated during CID is usually seen as undersirable. However, in our case it simplifies the analysis, as we can safely ignore PTMs and reduce the combinatorial complexity.} As a side-effect of the dissociation, a small neutral molecule sometimes breaks off of the fragment, lowering its total mass value without affecting its charge. This dissociated molecule is termed the \emph{neutral loss}; during CID and HCD, the most common neutral losses are water and amonia from the fragment N-- and C-- termini, and various other small molecules from specific amino acid side-chains.
+Fragments from ESI-ionized precursors can be and indeed often are multiply charged~\cite{katta1991use, michalski2012systematic}. According to the research on CID of crosslinked peptides by \citet{giese2016study}, most of the crosslinked fragments were found to have a positive charge of at least 2, while an overwhelming majority of linear fragments had a positive charge of 1. HCD is in principle similar to CID, and we believe these findings woud translate to HCD-generated fragments as well.
 
-The similarities do not end there: HCD and a specific subset of CID, a so called beam-type CID, also share a method of inducing the collisions. Precursor ions travel in a beam through a collision cell, and collide with the gas molecules along the way~\cite{xia2006ion}. Because of this passage through the cell, the precursor ions are sometimes dissociated more the once, resulting in the generation and detection of \emph{internal ions}. Many of the internal ions begin with a proline~\cite{michalski2012systematic}, revealing that the double cleavage event prefers some amino acids to others.
-
-The beam-type CID is often connected to a quadrupole analyser (being a quadrupole itself in a 3-quadrupole mass spectrometer), however, which can sometimes make it hard to interpret these spectra due to its relatively low accuracy. As shown by \citet{michalski2012systematic}, ion trap CID, unlike the beam-type variant, doesn't lead to the creation of internal ions. Furthermore, it has limits regarding the containment of molecules below a certain mass threshold, leading to a mass cutoff~\cite{louris1987instrumentation}.
-
-In the year 2007, the HCD dissiociation technique has been introduced~\cite{olsen2007higher}, combining the richer sequence information~\cite{xia2006ion} and lower mass cutoff of beam-type CID with the superior resultion capacity and accuracy of the orbitrap analyser; the accuracy was reported to be in the sub 1 ppm levels by the original paper. Data we use in this thesis are generated with HCD\@, because the high accuracy of its MS2 spectra makes it easier to filter out false positives that occur naturally during in silico matching of the spectra due to the combinatoric nature of the problem. Furthermore the detected internal ions can occasionaly be useful when determining the connectivity of complex DB configrations. Because the HCD fargmentation pathways are key to our work, we will discuss them in more detail below.
-
-\paragraph{Fragment types} The fragment types of a very pure sample protein were nicely summarized by \citet{michalski2012systematic}. Ions of \(b\) and \(y\) type comprise most of the spectral intensity (54\%, see \Cref{fig:hcd}), together with \(b\) ions with \(\ce{CO}\) neutral loss that are interchangeable with \(a\) ions. The ions themselves have different distributions, \(y\) ions being the most abundant. Other neutral loss ions, be it a loss of water, amonia, or an amino-acid-specific small molecule\footnote{If specific amino acid neutral losses are of interest, the wonderful review by~\cite{paizs2005fragmentation} lists many of them.}, together with internal ions, can be attributed a quarter of the total fragment intensity. Immonium ions account for 6\% of the intensity, totaling 85\% intensity that can be explained with the current understanding of HCD fragmentation pathways. For a visual overview of the many different HCD fragmentation types, please refer to \Cref{fig:fragment-types-hcd}.
+The different types of fragments of a very pure sample were nicely summarized by \citet{michalski2012systematic}. Ions of \(b\), \(y\) and \(a\) type comprise most of the spectral intensity (54\%, see \Cref{fig:hcd}). The ions themselves have different distributions, the \(y\) type being the most abundant. Other neutral loss ions, be it a loss of water, amonia, or an amino-acid-specific small molecule\footnote{If specific amino acid neutral losses are of interest, the review by~\citet{paizs2005fragmentation} lists many of them.}, together with internal ions, can be attributed a quarter of the total fragment intensity. Finally, immonium ions account for 6\% of the intensity. In total 85\% of the spectral intensity is explainable. For a visual overview of the many different HCD fragmentation types, please refer to \Cref{fig:fragment-types-hcd}.
 
 \begin{figure}
   \centering
@@ -143,23 +143,7 @@ In the year 2007, the HCD dissiociation technique has been introduced~\cite{olse
   \caption{(B) The regular \(b, y\), and \(a\) ions take up 54\% of the measured spectral intensity. Another 25\% is explained by fragments with neutral-loss and internal fragments, and another 6\% by immonium ions. Together, those four account for 85\% of the measured intensity. It is true that almost a half of the peaks are still left unexplained (A), however, given all of these fragments have to split the remaining 15\% of intensity, they are probably rather rare and are only of moderate importance. Image by~\citet{michalski2012systematic}.}\label{fig:hcd}
 \end{figure}
 
-\paragraph{Charge} Coming from ESI-ionized precursors, fragments can be and indeed often are multiply charged~\cite{katta1991use, michalski2012systematic}; the only real limit of the fragment charge is the charge of its precursor. Of course, uncharged fragments are undetectable by the mass spectrometer. According the research on CID of crosslinked peptides by \citet{giese2016study}, most of the crosslined fragments were found to have a positive charge of at least 2, while an overwhelming majority of linear fragments had a positive charge of 1. Their results are illustrated on \Cref{fig:crosslink-charge}.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=.5\linewidth]{img/crosslink-charge.png}
-  \caption{Most linear fragments have charge 1, and most crosslinked fragments have a charge of 2 or higher. Image by~\citet{giese2016study}.}\label{fig:crosslink-charge}
-\end{figure}
-
-The fragmentation pathways are complicated enough even without the presence of DBs, and the addition of peptide crosslinks complicates the matter further. We have to take into account the alkylation of non-bonded cysteines during the analaysis; the DB can be cleaved during the dissociation, resulting in fragments roughly resembling the fragmentation pathway of each connected peptide in the original precursor. If left intact, the crosslinks between precursors (or within one precursor) widen the possibilities of attainable mass values considerably.
-
-\paragraph{Disulphide bridges} Although DBs are not affected by low-energy CID as much as the other PTMs~\cite{paizs2005fragmentation, lioe2007novel}, in high energy collision fragmentation, cleavage of the S-S bond can be observed with a higher probability~\cite{bean1992characterization}. The cleavage of the bond can result in the formation of an asymetrical distribution of mass on the two cysteines~\cite{zhang2006mapping}, that has been nicely ilustrated by \citet{tsai2013mass}, see \Cref{fig:disulfide-bond-cleavage-assymetry} for details. The sole presence of a DB influences the fragmentation pathway of the whole peptide; \citet{mormann2008fragmentation} reports a low but detectable signal of peptide backbone cleavages in the bonds instide S-S loop of an internal DB, while \citet{clark2011collision} reports a higher frequence of internal ions. The latter complicates the analysis noticeably as we have to take all combinations of cleavage positions from all interlinked peptides in the precuror, but also in theory allows us to differentiate between different configurations of intra-peptide bonds, such as those on \Cref{fig:intrapeptide-bonds}.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=.5\linewidth]{img/intrapeptide-bond.jpeg}
-  \caption{An example of different possible configurations of intra-peptide DBs. Image by~\citet{durand2013tandem}.}\label{fig:intrapeptide-bonds}
-\end{figure}
+Although DBs are not affected by low-energy CID as much as the other PTMs~\cite{paizs2005fragmentation, lioe2007novel}, in high energy collision fragmentation such as HCD, cleavage of the S-S bond can be observed with a higher probability~\cite{bean1992characterization}. The cleavage of the bond can result in the formation of an asymetrical distribution of mass on the two cysteines~\cite{zhang2006mapping}, see \Cref{fig:disulfide-bond-cleavage-assymetry} for details. Additionally, the sole presence of a DB influences the fragmentation pathways of the whole peptide; \citet{mormann2008fragmentation} reports a low but detectable signal of peptide backbone cleavages in the bonds instide S-S loop of an internal DB, while \citet{clark2011collision} reports a higher frequence of internal ions.
 
 \begin{figure}
   \centering
@@ -167,7 +151,22 @@ The fragmentation pathways are complicated enough even without the presence of D
   \caption{Under different dissociation strategies, DBs manifest different cleavage characteristics. Under CID, the cleavage results into two possible assymetrical mass distributions. Image by~\citet{tsai2013mass}.}\label{fig:disulfide-bond-cleavage-assymetry}
 \end{figure}
 
-To recapitulate, HCD fragmentation pathways of non-crosslinked peptides are relatively well-understood. However, the presence of DBs results in complex fragmentation patterns that are hard to analyze. The existing methods for DB identification thus usually involve a lot manual work, or do the bulk of the analysis in silico, but require the researcher to manually discard the many generated false positive matches afterwards. We briefly review some of these methods in the next section.
+To recapitulate, in theory a \(b\), \(y\), \(a\), or an internal ion can be seen in a HCD fragmentation spectra with zero or more of the following modifications:
+
+\begin{enumerate}
+  \item Dissociated neutral loss.
+  \item Covalent modifications on some of the amino acid residues, such as methionine oxidation. A subset of these are the cysteine alkylations.
+  \item A piece of a former DB that has been cleaved during the fragmentation.
+  \item One or more fragments, possibly modified with some of the above, connected by a set of DBs. For some examples of crossliked fragments, see \Cref{fig:intrapeptide-bonds}.
+\end{enumerate}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.5\linewidth]{img/intrapeptide-bond.jpeg}
+  \caption{An example of different possible configurations of intra-peptide DBs. Image by~\citet{durand2013tandem}.}\label{fig:intrapeptide-bonds}
+\end{figure}
+
+If we managed to identify the crosslinked fragments (category 4) in the measured data, we would gain a lot of important evidence about the presence of certain DBs in the protein. However, due to the complexity of the potential fragments, the fragment identification proces is very hard to automate completely. The next section details some of the current approaches to fragment assignment and DB mapping.
 
 \section{Breptide spectra interpretation}\label{sec:analysis}
 
@@ -218,7 +217,7 @@ To solve the task, we need to find all contiguous subgraphs of the precursor gra
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\linewidth]{img/nonplanar.pdf}
+  \includegraphics[width=0.5\linewidth]{img/nonplanar.pdf}
   \caption{An example of a valid precursor graph that is not planar due to the presence of a \(K_{3, 3}\) subdivision~\cite{kuratowski1930probleme} (highlighted). Vertices represent amino acid residues, horizontal lines represent peptide bonds, and vertical curved lines represent disulfide bonds. The precursor could be made out of four different interlinked peptides, but it is alsopossible for it to be a single peptide with many intrapeptide disulfide bonds.}\label{fig:nonplanar}
 \end{figure}
 
