@@ -209,7 +209,7 @@ To continue this discussion further, we need to be specific about the precise ta
 
 We are provided a precursor \(R\) comprising of \(n\) residues with integer masses, interlined with DBs and peptide bonds, and a target integer fragment mass \(f\). Our task is to find all fragment ions from \(R\) whose mass exactly matches \(f\).
 
-% TODO PRecursor graph je variant graph
+\xxx{PRecursor graph je variant graph}
 
 We can model the precursor as a graph \(G_R = (V, E)\) with weighted nodes, where \(|V|  = 1\ldots n\) and \((i, j) \in E\) if and only if there is a peptide or a disulfide bond connecting  the \(i\)-th and \(j\)-th residue in \(R\). The weight \(w_i\) of the vertex \(i\) is the mass of the corresponding \(i\)-th residue in the precursor. We will call this graph the \emph{precursor graph of the precursor} \(R\). Even though the bonds in \(R\) are constrained in terms of connectivity --- there can be at most one DB connected to a given residue, and at most two peptide bonds --- \(G_R\) can still in theory be a relatively complex non-planar graph, as illustrated on \Cref{fig:nonplanar}.
 
