@@ -25,7 +25,7 @@ As is apparent from the images, Dibby generates a lot of false positive signal. 
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\linewidth]{img/lys.pdf}
+  \includegraphics[width=0.8\linewidth]{img/lys.pdf}
   \caption{The evidence for positions of DBs and alkylations in lysozyme, weighted by variant score, and normalized. There are quite a few false positives, however, the bonds \((5, 126)\) and \((29, 114)\) are still clearly visible. We can safely ignore the other directed edges stemming from 5, because their scores are relatively low compared to \((5, 126)\), and also because they are not bidirectional --- that means that the supposed bond-partners are seen more commonly in other configurations. The presence of the bond \((75, 93)\) is not so clear-cut; we also have strong signals about the cysteines being alkylated. This warrants further investigation. Finally, the evidence for bond \((63, 79)\) is practically not present, and both cysteines were deemed as alkylated.}\label{fig:lys}
 \end{figure}
 
@@ -33,17 +33,13 @@ As is apparent from the images, Dibby generates a lot of false positive signal. 
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\linewidth]{img/genova.pdf}
+  \includegraphics[width=0.8\linewidth]{img/genova.pdf}
   \caption{The evidence for positions of DBs and alkylations in in-silico generated ovalbumin, weighted by variant score, and normalized. Although there are some false positives, the only confirmed bidirectional bond is also the correct one: \((72, 119)\).}\label{fig:genova}
 \end{figure}
 
 \paragraph{Lipase} Only one of the three DBs has been identified in the LIP sample (\Cref{fig:lip}). Interestingly, we have identified exactly zero variants containing the cysteines 271 and 295, alkylated or otherwise. To test whether this had been caused by a problem in the data or the algorithm, we have run a MSGF+~\cite{kim2014ms} analysis on the LIP samples (and later on the other samples as well); the comparison with results from Dibby is in \Cref{tbl:measurements}. We can see that even MSGF+, a state of the art proteomic database search tool, had problems with LIP data, suggesting an unknown issue occurred during the sample preparation, rendering most of the LIP data unusable.
 
-
-% Please add the following required packages to your document preamble:
-% \usepackage{booktabs}
-% \usepackage{multirow}
-\begin{table}[]
+\begin{table}[ht]
   \begin{tabular}{@{}llllll@{}}
     \toprule
     \multicolumn{1}{c}{\multirow{2}{*}[-0.25em]{Sample}} & \multirow{2}{*}[-0.25em]{Scans} & \multicolumn{1}{c}{\multirow{2}{*}[-0.2em]{\begin{tabular}[c]{@{}c@{}}MSGF+\\ Matches\end{tabular}}} & \multicolumn{3}{c}{Dibby matches}               \\ \cmidrule(l){4-6}
@@ -57,13 +53,12 @@ As is apparent from the images, Dibby generates a lot of false positive signal. 
     BSA AT                                               & 13856                           & 1495                                                                   & 1717                              & 48222 &     \\
     BSA RAT                                              & 14242                           & 1723                                                                   & 2684                              & 22133 &     \\ \bottomrule
   \end{tabular}
-  \centering
   \caption{Comparison of Dibby with MSGF+, a state-of-the-art database search tool for proteomics. MSGF+ can only identify peptides that are not cross-linked, or ``simple'' peptides; for this reason, we list the number of Dibby's simple assignments in addition to the total number of its assignments. Generally, Dibby identifies a bit more simple precursors than MSGF+, most of which are probably false positives. On the other hand, there are close to 0 false negatives. There is clearly a problem with lipase data; MSGF+ identified 16 times more precursors in the LYS RAT sample than in LIP RAT, although the number of measured scans in the mgf file is comparable between these two samples.}\label{tbl:measurements}
 \end{table}
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\linewidth]{img/lip.pdf}
+  \includegraphics[width=0.8\linewidth]{img/lip.pdf}
   \caption{The evidence for positions of DBs and alkylations in in-silico generated ovalbumin, weighted by variant score, and normalized. No fragments containing cysteines 271 and 295 have been assigned (neither in alkylated form, nor as a part of any disulphide bond); this leads us to believe that a part of the data has been lost, or otherwise damaged.}\label{fig:lip}
 \end{figure}
 
