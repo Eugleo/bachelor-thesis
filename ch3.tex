@@ -8,7 +8,7 @@ In the proteins we analysed, the theoretical positions of DBs are known. We call
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\linewidth]{img/scoring-metric-evaluation.pdf}
+  \includegraphics[width=0.85\linewidth]{img/scoring-metric-evaluation.pdf}
   \caption{Scoring metric evaluation on datasets from four different samples. Individual datapoints represent different assigned variants, that are grouped based on whether they contradict expert knowledge about DB positions. The boxplots illustrate that the separation is usually relatively good, but as we can see from the datapoints, there are still a lot of (in theory) nonexsting variants with a high score. This can partly be attributed to DB scrambling. The lack of data in the LIP sample is discussed in the text. (BSA = bovine serum albumin, LYS = lysosyme, LIP = lipase, GENOVA = an in-silico generated ovalbumin dataset)}\label{fig:scoring-metric}
 \end{figure}
 
@@ -75,9 +75,6 @@ To conclude, the scoring metric separates good variants from the bad ones rather
 In the discussion below, we do not consider the results obtained from the LIP samples, because --- as we have shown --- there has been an unknown issue during the measurements, rendering the data unreliable.
 
 \paragraph{Scoring} In order for the scoring metric to be useful, bad fragments and variants should generally have a lower score than good ones, presuming the measured data correlates with the expert knowledge about DB positions. We have indeed found that the metric satisfactorily spearates the good variants from the bad ones (see \Cref{fig:scoring-metric}), nonetheless there are still many bad variants with a high score, especially in the BSA and LYS datasets. A possible explanation is that although DBs that contradict expert knowledge should not be present in the data \emph{in theory}, due to DB scrambling they \emph{are} present; subsequently, variants containing these bonds receive a high score because they match the measured data well, but are labeled as bad during our evaluation of the scoring metric (\Cref{fig:scoring-metric}). This hypothesis is further supported by the absence of the high-scoring bad variants from the generated GENOVA dataset, in which no DB scrambling has occured.
-
-\xxx{Zmínit BSA, např. že jsme ho odignorovali}
-
 
 \paragraph{DB characterisation} Despite the strong signal from false positive matches, and the complications resulting from DB scambling, most of the DBs present in LYS (\Cref{fig:lys}) and GENOVA (\Cref{fig:genova}) have been identified. Especially important is the LYS DB \((75, 93)\), an intrapeptide DB that would be hard to identify with other methods. This demonstrates the flexibility and raw matching power of the algorihm. However, more work needs to be done to lower the false discovery rate. After improvements in this area, and potentially some changes to the data preparation protocol, Dibby could be used to assist researchers with DB mapping in proteins.
 

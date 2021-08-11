@@ -1,12 +1,10 @@
 \chapter{Tandem mass spectrometry in the context of disulfide bond analysis}
 
-In the introduction we have established that disulfide bonds (DB) are important to protein function, structure, and to enzyme regulation. We have also shown that information about their positions can be used to optimise folding methods that are based on molecular dynamic simulations. We hope that these are enough to persuade the reader that studying the DB positions in a protein is a worthwhile task, although a complicated one.
+In the introduction we have established that disulfide bonds (DB) are important to protein function, structure, and to enzyme regulation. We have also shown that information about their positions can be used to optimise folding methods that are based on molecular dynamic simulations. We hope that these are enough to persuade the reader that studying the DB positions in a protein is a worthwhile task, although a complicated one. The most popular method of DB mapping is tandem mass spectrometry (MS/MS). MS/MS is a general analysis technique that is often used in proteomics for its accuracy, sensitivity and speed.~\cite{gorman2002protein}
 
-There are many methods aiming to determine the positions of DBs; the most popular is tandem mass spectrometry (MS/MS). MS/MS is a popular analysis technique, often used in proteomics, and specifically DB mapping, for its accuracy, sensitivity and speed.~\cite{gorman2002protein}
+In MS/MS analysis (or more accurately its bottom-up variant), the protein is fragmented to smaller charged peptides whose mass to charge ratio (\(m/z\)) is measured with atomic precision. Multiple sets of \emph{fragmentation spectra} are obtained, each coming from a longer peptide with a specific \(m/z\) value that is called the \emph{precursor}. While in proteomics the task is usually to identify the original protein from the fragments, during DB mapping it is known which protein the fragments come from, and instead the task is to determine the positions of its DBs.
 
-In MS/MS analysis (or more accurately its bottom-up variant), the protein is eventually fragmented to smaller charged peptides whose mass to charge ratio (\(m/z\)) is measured with atomic precision. Multiple sets of \emph{fragmentation spectra} are obtained, each coming from a longer peptide with a specific \(m/z\) value that is called the \emph{precursor}. While in proteomics the task is usually to identify the original protein from the fragments, during DB mapping it is known which protein the fragments come from, and instead the task is to determine the positions of its DBs.
-
-The experiment can be designed in a way that keeps the DBs intact, resulting in the occurence of crosslinked peptides with specific fragmentation signatures. There are multiple analytical methods, both manual and computational, that try to discover these fragmentation spectra and use them to determine the positions of the DBs in the protein. Other methods choose to dissociate the DBs during the fragmentation, a process that leads to another kind of specific fragmentation signatures.
+The experiment can be designed in a way that keeps the DBs intact, resulting in the occurence of crosslinked peptides with specific fragmentation signatures. There are multiple analytical methods that try to discover these fragmentation spectra and use them to determine the positions of the DBs in the protein. Other methods choose to dissociate the DBs during the fragmentation, a process that leads to another kind of specific fragmentation signatures.
 
 The first few sections of this chapter roughly reflect the first few steps in a mass spectrometry experiment.
 
@@ -19,11 +17,11 @@ The first few sections of this chapter roughly reflect the first few steps in a 
 
 \section{Protein digestion and sample preparation}\label{sec:trypsin}
 
-In order for the protein to be analysed, it first needs to be digested into smaller peptides; trypsin, and, to a lesser extent, pepsin, are popular choices in general proteomics.
+In order for the protein to be analysed, it first needs to be digested into smaller peptides; trypsin, and, to a lesser extent, pepsin, are popular choices in proteomics.
 
-Trypsin is a serine protease that cleaves amino acid chains at the carboxyllic side of lysine and arginine, provided they are not followed by proline~\cite{olsen2004trypsin}. Lysine and arginine are both relatively abundant in most proteins which makes the tryptic digestion peptides --- or as we will call them, \emph{tryptides} --- reasonably sized for a mass spectrometry analysis~\cite{matthiesen2020trypticsize}. Additionally, trypsin has very high specificity, and thus the digestion peptides are quite predictable. That being said, the sample protein is not cleaved at every potential cleavage site; so called \emph{missed cleavages} do occur during most proteolytic digestions. The frequency of missed cleavages depends on neigbouring residues of the cleavage site~\cite{gershon2014cleaved}, the used protease, and the experimental setup.
+Trypsin is a serine protease that cleaves amino acid chains at the carboxyllic side of lysine and arginine, provided they are not followed by proline~\cite{olsen2004trypsin}. Lysine and arginine are both relatively abundant in most proteins which makes the tryptic digestion peptides --- or as we will call them, \emph{tryptides} --- reasonably sized for a mass spectrometry analysis~\cite{matthiesen2007mass}. Additionally, trypsin has very high specificity, and thus the digestion peptides are quite predictable. That being said, the sample protein is not cleaved at every potential cleavage site; so called \emph{missed cleavages} do occur during most proteolytic digestions. The frequency of missed cleavages depends on neigbouring residues of the cleavage site~\cite{gershon2014cleaved}, the used protease, and the experimental setup.
 
-Relevant to our work is the following particularity of trypsin and some other proteases: they require a neutral-to-basic environment in order to become proteolytically active. In this environment the issue of DB scrambling arises~\cite{wu1997novel}; some of the DBs become dissociated, then the cysteines re-connect, but in different patterns than before. These scrambled bonds are diffucult to discern from the naturally occuring ones in the mass spectra. The issue can be mitigated by using a different protease for the digestion, such as pepsin, or thermolysin~\cite{sung2016evaluation}.
+Relevant to our work is the following particularity of trypsin and some other proteases: they require a neutral-to-basic environment in order to become proteolytically active. In this type of environment the issue of DB scrambling arises~\cite{wu1997novel}; some of the DBs become dissociated, then the cysteines re-connect, but in different patterns than before. These scrambled bonds are diffucult to discern from the naturally occuring ones in the mass spectra. The issue can be mitigated by using a different protease for the digestion, such as pepsin, or thermolysin~\cite{sung2016evaluation}.
 
 In addition to digestion, in a general proteomic experiment the protein usually undergoes reduction that completely dissociates the DBs, and cysteine alkylation that prevents the cysteines from reassociating. However, in an experiment that aims to characterise cysteine linkages, only the alkylation is performed, and the present DBs are kept intact.
 
@@ -94,13 +92,13 @@ A mass analyser, sometimes equipped with a separate detector, measures the mass 
 \begin{figure}
   \centering
   \includegraphics[width=.4\linewidth]{img/quadrupole.png}
-  \caption{A quadrupole with two highlighted classes of ion trajectories. Thanks to its \(m/z\) value, the ion with green trajectory passes through the quadrupole and is ultimately detected, while the one with the red trajectory is filtered out. Image taken from~\citet{2021Mass}.}\label{fig:quadrupole}
+  \caption{A quadrupole with two highlighted classes of ion trajectories. The ion with green trajectory passes through the quadrupole and is ultimately detected, while the one with the red trajectory is filtered out. How will the trajectory look like for a specific ion depends on its \(m/z\) value. Image taken from~\citet{2021Mass}.}\label{fig:quadrupole}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=.5\linewidth]{img/orbitrap.png}
-  \caption{An Orbitrap mass analyser with a typical ion trajetrory highlighted. The ion circulates around the center while simultanously oscillating along the z-axis. Image by~\citet{hu2005orbitrap}.}\label{fig:orbitrap}
+  \caption{An Orbitrap mass analyser with a typical ion trajetrory highlighted. The ion circulates around the center while simultanously oscillating along the z-axis. The oscillation is detected and used to compute the \(m/z\) value of the ion. Image by~\citet{hu2005orbitrap}.}\label{fig:orbitrap}
 \end{figure}
 
 \subsection{Precursor fragmentation}\label{sec:fragmentation}
@@ -118,7 +116,7 @@ A specific variant of CID called the beam-type CID produces \emph{internal ions}
 \begin{figure}
   \centering
   \includegraphics[width=.75\linewidth]{img/fragment-types.png}
-  \caption{A singly positively charged peptide with annotated fragmentation types. Signature CID b/y ion fragments are marked with open circles, while the typical ECD and ETD c/z ion fragments are marked with filled circles. Image by~\citet{hart2014review}.}\label{fig:fragment-types}
+  \caption{A singly positively charged peptide with annotated fragmentation types. The CID b/y ion fragments are marked with open circles, while the typical ECD and ETD c/z ion fragments are marked with filled circles. Image by~\citet{hart2014review}.}\label{fig:fragment-types}
 \end{figure}
 
 A similar fragmentation signature to CID can also be obtained by infrared multiphoton dissociation (IRMPD)~\cite{oomens2006gas}. Because IRMPD, and the related UV-MPD, do not require collision gasses to be present for the fragmentaion, they are well suited for analysers operating under high vacuum, such as FT-ICR\@.
@@ -134,13 +132,13 @@ The different types of fragments of a very pure sample were nicely summarized by
 \begin{figure}
   \centering
   \includegraphics[width=.9\linewidth]{img/fragment-types-hcd.png}
-  \caption{During HCD, \(b, y\), and to a lesser extent \(a\), ions are the most common, together with internal ions and immonium ions, and their counterparts with neutral losses. Image by~\citet{michalski2012systematic}.}\label{fig:fragment-types-hcd}
+  \caption{The different fragment types that are common in HCD fragmentation. During HCD, \(b, y\), and to a lesser extent \(a\), ions are the most frequent, together with internal ions and immonium ions, and their counterparts with neutral losses. Image by~\citet{michalski2012systematic}.}\label{fig:fragment-types-hcd}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=.9\linewidth]{img/hcd.png}
-  \caption{(B) The regular \(b, y\), and \(a\) ions take up 54\% of the measured spectral intensity. Another 25\% is explained by fragments with neutral-loss and internal fragments, and another 6\% by immonium ions. Together, those four account for 85\% of the measured intensity. It is true that almost a half of the peaks are still left unexplained (A), however, given all of these fragments have to split the remaining 15\% of intensity, they are probably rather rare and are only of moderate importance. Image by~\citet{michalski2012systematic}.}\label{fig:hcd}
+  \caption{(B) In a HCD fragmentation spectrum, \(b, y\), and \(a\) ions are responsible for 54\% of the measured spectral intensity. Another 25\% is generated by fragments with neutral-loss and internal fragments, and another 6\% by immonium ions. Together, those four account for 85\% of the measured intensity. It is true that almost a half of the peaks are still left unexplained (A), however, given all of these fragments have to split the remaining 15\% of intensity, they are probably rather rare and are only of moderate importance. Image by~\citet{michalski2012systematic}.}\label{fig:hcd}
 \end{figure}
 
 Although DBs are not affected by low-energy CID as much as the other PTMs~\cite{paizs2005fragmentation, lioe2007novel}, in high energy collision fragmentation such as HCD, cleavage of the S-S bond can be observed with a higher probability~\cite{bean1992characterization}. The cleavage of the bond can result in the formation of an asymetrical distribution of mass on the two cysteines~\cite{zhang2006mapping}, see \Cref{fig:disulfide-bond-cleavage-assymetry} for details. Additionally, the sole presence of a DB influences the fragmentation pathways of the whole peptide; \citet{mormann2008fragmentation} reports a low but detectable signal of peptide backbone cleavages in the bonds instide S-S loop of an internal DB, while \citet{clark2011collision} reports a higher frequence of internal ions.
@@ -163,7 +161,7 @@ To recapitulate, in theory a \(b\), \(y\), \(a\), or an internal ion can be seen
 \begin{figure}
   \centering
   \includegraphics[width=.5\linewidth]{img/intrapeptide-bond.jpeg}
-  \caption{An example of different possible configurations of intra-peptide DBs. Image by~\citet{durand2013tandem}.}\label{fig:intrapeptide-bonds}
+  \caption{An example of different possible configurations of intra-peptide DBs. These types of precursors would be hard to discern by the common DB mapping methods that rely on DB dissociation, because the information about which cysteines were connected is lost. Image by~\citet{durand2013tandem}.}\label{fig:intrapeptide-bonds}
 \end{figure}
 
 If we managed to identify the crosslinked fragments (category 4) in the measured data, we would gain a lot of important evidence about the presence of certain DBs in the protein. However, due to the complexity of the potential fragments, the fragment identification proces is very hard to automate completely. The next section details some of the current approaches to fragment assignment and DB mapping.
@@ -245,57 +243,3 @@ A well-studied closely related problem called the maximum weight connected k-sub
 Furthermore, this was only a simplified look on the fragment matching problem. In reality, we are not looking for an exact match, but we have a tolerance range whose size is not absolute, but is defined relative to the mass of the generated fragment (in ppm). We also have to take into account the possible modifications of amino acid residues, the possibile occurences of a neutral loss, and the asymetrical nature of disulfide bond cleavage under CID, adding additional complexity to an already complex problem.
 
 Nevertheless, in the next chapter we describe a general algorithm that attempts to solve the fragment matching problem, and use the results to identify DBs in the original protein. We apply an upper bound on the number of cleavages of matched fragments, which limits the search space considerably. We also employ strict limits regarding the matching error, which enables us to search the space in a branch-and-bound fashion.
-
-% \chapter{Important first chapter}
-% \label{chap:refs}
-
-% First chapter usually builds the theoretical background necessary for readers to understand the rest of the thesis. You should summarize and reference a lot of existing literature and research.
-
-% You should use the standard \emph{citations}\todo{Use \textbackslash{}emph command like this, to highlight the first occurrence of an important word or term. Reader will notice it, and hopefully remember the importance.}.
-
-% \begin{description}
-% \item[Obtaining bibTeX citation] Go to Google Scholar\footnote{\url{https://scholar.google.com}}\todo{This footnote is an acceptable way to `cite' webpages or URLs. Documents without proper titles, authors and publishers generally do not form citations. For this reason, avoid citations of wikipedia pages.}, find the relevant literature, click the tiny double-quote button below the link, and copy the bibTeX entry.
-% \item[Saving the citation] Insert the bibTeX entry to the file \texttt{refs.bib}. On the first line of the entry you should see the short reference name --- from Scholar, it usually looks like \texttt{author2015title} --- you will use that to refer to the citation.
-% \item[Using the citation] Use the \verb|\cite| command to typeset the citation number correctly in the text; a long citation description will be automaticaly added to the bibliography at the end of the thesis. Always use a non-breakable space before the citing parenthesis to avoid unacceptable line breaks:
-% \begin{Verbatim}
-% Trees utilize gravity to invade ye
-% noble sires~\cite{newton1666apple}.
-% \end{Verbatim}
-% \item[Why should I bother with citations at all?] For two main reasons:
-% \begin{itemize}
-% \item You do not have to explain everything in the thesis; instead you send the reader to refer to details in some other literature. Use citations to simplify the detailed explanations.
-% \item If you describe something that already exists without using a citation, the reviewer may think that you \emph{claim} to have invented it. Expectably, he will demand academic correctness, and, from your perspective, being accused of plagiarism is not a good starting point for a successful defense. Use citations to identify the people who invented the ideas that you build upon.
-% \end{itemize}
-% \item[How many citations should I use?]
-% Cite any non-trivial building block or assumption that you use, if it is published in the literature. You do not have to cite trivia, such as the basic definitions taught in the introductory courses.
-
-% The rule of thumb is that you should read, understand and briefly review at least around 4 scientific papers. A thesis that contains less than 3 sound citations will spark doubt in reviewers.
-% \end{description}
-
-% There are several main commands for inserting citations, used as follows:
-% \begin{itemize}
-% \item \citet{knuth1979tex} described a great system for typesetting theses.
-% \item We are typesetting this thesis with \LaTeX, which is based on \TeX{} and METAFONT~\cite{knuth1979tex}.
-% \item \TeX{} was expanded to \LaTeX{} by \citet{lamport1994latex}, hence the name.
-% \item Revered are the authors of these systems!~\cite{knuth1979tex,lamport1994latex}
-% \end{itemize}
-
-% \section{Some extra assorted hints before you start writing English}
-
-% Strictly adhere to the English word order rules. The sentences follow a fixed structure with subject followed by a verb and an object (in this order). Exceptions to this rule must be handled specially, and usually separated by commas.
-
-
-% Mind the rules for placing commas:
-% \begin{itemize}
-% \item Use the \emph{Oxford comma} before `and' and `or' at the end of a longer, comma-separated list of items. Certainly use it to disambiguate any possible mixtures of conjunctions: \textit{`The car is available in red, red and green, and green versions.'}
-% \item Do not use the comma before subordinate clauses that begin with `that' (like this one). English does not use subordinate clauses as often as Slavic languages because the lack of a suitable word inflection method makes them hard to understand. In scientific English, try to avoid them as much as possible. Ask doubtfully whether each `which' and `when' is necessary --- most of these helper conjunctions can be removed by converting the clause to non-subordinate.
-
-% As an usual example, \xxx{\textit{`The sentence, which I wrote, seemed ugly.'}} is perfectly bad; slightly improved by \xxx{\textit{`The sentence that I wrote seemed ugly.'}}, which can be easily reduced to \textit{`The sentence I wrote seemed ugly.'}. A final version with added storytelling value could say \textit{`I wrote a sentence but it seemed ugly.'}
-% \item Consider placing extra commas around any parts of the sentence that break the usual word order, especially if they are longer than a single word.
-% \end{itemize}
-
-% Do not write long sentences. One sentence should contain exactly one fact. Multiple facts should be grouped in a paragraph to communicate one coherent idea. Paragraphs are grouped in labeled sections for a sole purpose of making the navigation in the thesis easier. Do not use the headings as `names for paragraphs' --- the text should make perfect sense even if all headings are removed. If a section of your text contains one paragraph per heading, you might have wanted to write an explicit list instead.
-
-% Every noun needs a determiner (`a', `the', `my', `some', \dots); the exceptions to this rule, such as non-adjectivized names and indeterminate plural, are relatively scarce. Without a determiner, a noun can be easily mistaken for something completely different, such as an adjective or a verb.
-
-% Consult the books by \citet{glasman2010science} and \citet{sparling1989english} for more useful details.
