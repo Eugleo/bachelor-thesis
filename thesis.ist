@@ -1,0 +1,31 @@
+% makeindex style file created by the glossaries package
+% for document 'thesis' on 2021-8-11
+actual '?'
+encap '|'
+level '!'
+quote '"'
+keyword "\\glossaryentry"
+preamble "\\glossarysection[\\glossarytoctitle]{\\glossarytitle}\\glossarypreamble\n\\begin{theglossary}\\glossaryheader\n"
+postamble "\%\n\\end{theglossary}\\glossarypostamble\n"
+group_skip "\\gls*groupskip\n"
+item_0 "\%\n"
+item_1 "\%\n"
+item_2 "\%\n"
+item_01 "\%\n"
+item_x1 "\\relax \\gls*resetentrylist\n"
+item_12 "\%\n"
+item_x2 "\\relax \\gls*resetentrylist\n"
+delim_0 "\{\\glossaryentrynumbers\{\\relax "
+delim_1 "\{\\glossaryentrynumbers\{\\relax "
+delim_2 "\{\\glossaryentrynumbers\{\\relax "
+delim_t "\}\}"
+delim_n "\\delimN "
+delim_r "\\delimR "
+headings_flag 1
+heading_prefix "\\gls*groupheading\{"
+heading_suffix "\}\\relax \\gls*resetentrylist "
+symhead_positive "glssymbols"
+numhead_positive "glsnumbers"
+page_compositor "."
+suffix_2p ""
+suffix_3p ""

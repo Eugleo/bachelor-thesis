@@ -43,7 +43,7 @@ thesis.pdf
 *.fdb_latexmk
 *.synctex
 *.synctex(busy)
-* Refer to the same publication for a bigger list of past and current compuational and manual DB characterisation methods.
+* Refer to the same publication for a bigger list of past and current compuational and manual \gls*{db} characterisation methods.
 
 SimXL is tool for general peptide cross-linking analysis \cite{}.synctex.gz
 *.synctex.gz(busy)

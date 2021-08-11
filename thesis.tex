@@ -44,9 +44,26 @@
 \usepackage{multirow}
 \usepackage{mathtools}
 \usepackage{microtype}
+\usepackage[acronym]{glossaries}
+
+\makenoidxglossaries
+
+\setacronymstyle{long-short}
+\newacronym{db}{DB}{disulphide bond}
+\newacronym{ms}{MS}{mass spectrometry}
+\newacronym{msms}{MS/MS}{tandem mass spectrometry}
+\newacronym{lc}{LC}{liquid chromatography}
+\newacronym{ptm}{PTM}{post-translational modification}
+\newacronym{etd}{ETD}{electron-transfer dissociation}
+\newacronym{ecd}{ECD}{electron-capture dissociation}
+\newacronym{cid}{CID}{collision-induced dissociation}
+\newacronym{hcd}{HCD}{higher-energy C-trap dissociation}
+\newacronym{lys}{LYS}{lysozyme}
+\newacronym{lip}{LIP}{lipase}
+\newacronym{genova}{GENOVA}{in-silico generated ovalbumin}
+\newacronym{bsa}{BSA}{bovine serum albumin}
 
 \DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
-
 
 % some useful packages
 \usepackage{amsmath,amsfonts,amsthm,bm}
@@ -128,7 +145,11 @@
 \include{ch2}
 \include{ch3}
 \include{conclusion}
+
+
 \include{bibliography}
+
+\printnoidxglossaries
 
 % \appendix
 % \include{howto}
