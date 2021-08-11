@@ -12,7 +12,7 @@ In the proteins we analysed, the theoretical positions of \glspl*{db} are known.
   \caption{Scoring metric evaluation on datasets from four different samples. Individual data points represent different assigned variants, that are grouped based on whether they contradict expert knowledge about \gls*{db} positions. The box plots illustrate that the separation is usually relatively good, but as we can see from the data points, there are still a lot of (in theory) non-existent variants with a high score. This can partly be attributed to \gls*{db} scrambling. The lack of data in the \gls*{lip} sample is discussed in the text. (\gls*{bsa} = bovine serum albumin, \gls*{lys} = lysozyme, \gls*{lip} = lipase, \gls*{genova} = an in-silico generated ovalbumin dataset)}\label{fig:scoring-metric}
 \end{figure}
 
-\section{Dibby identifies existing \glspl*{db}}
+\section{Dibby identifies existing disulphide bonds}
 
 A complete \gls*{db} analysis has been performed on three proteins, namely \gls*{lys}, \gls*{lip}, and \gls*{genova}\@. The analysis was initially run with vanilla settings. If there had been a strong evidence for a particular \gls*{db} in the RAT data, it was deemed to be prone to generating false positive signals. Consequently, its weight has been adjusted to 0.1, or 0.8, depending on the strength of its RAT evidence, and the analysis was run again.
 
