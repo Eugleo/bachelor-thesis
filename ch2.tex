@@ -195,7 +195,7 @@ As illustrated in \Cref{fig:score-calculation}, a score of the precursor assignm
 
 \paragraph{Utilization of the AT and RAT results in differential analysis} Evidence plots are generated for the AT and RAT samples. Bonds that produce strong evidence in the RAT data, where in reality there should be no \glspl*{db} present, are deemed to be prone to generating false positives. For an example, see the bond \((75, 114)\) in the top-right-corner plot in \Cref{fig:lys}. We expect the same bond to generate a lot of false positive signal in the AT sample, too. Thus, we would like to penalize variants with this specific bond. This can be done by adding the \gls*{db} to a blacklist that gets checked by the precursor and fragment scoring functions.
 
-\subsubsection{Results interpretation}
+\subsubsection{Results interpretation}\label{sec:interpretation}
 
 Due to the nature of the visualization, we say a bond \((x, y)\) has been \emph{identified} if and only if there is plenty of evidence for the \emph{bidirectional} connection between cysteines \(x\) and \(y\); in the plot, both of the arrows have to be green. For an example of an identified bond see \((72, 119)\) and the edges connecting those two cysteines in \Cref{fig:genova}.
 
