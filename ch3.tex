@@ -12,6 +12,14 @@ In the proteins we analysed, the theoretical positions of \glspl*{db} are known.
   \caption{Scoring metric evaluation on datasets from four different samples. Individual data points represent different assigned variants, that are grouped based on whether they contradict expert knowledge about \gls*{db} positions. The box plots illustrate that the separation is usually relatively good, but as we can see from the data points, there are still a lot of (in theory) non-existent variants with a high score. This can partly be attributed to \gls*{db} scrambling. The lack of data in the \gls*{lip} sample is discussed in the text. (\gls*{bsa} = bovine serum albumin, \gls*{lys} = lysozyme, \gls*{lip} = lipase, \gls*{genova} = an in-silico generated ovalbumin dataset)}\label{fig:scoring-metric}
 \end{figure}
 
+Additionally, we further reduce the influence of false positive matches on the results by blacklisting \glspl*{db} that are prone to generating false positive evidence. This process is described in detail in \Cref{sec:diff}. The effect of this differential analysis is illustrated on the example of \gls*{lys} samples in  \Cref{fig:lys-at-rat-diff}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\linewidth]{img/pdfa-lys-at-rat-diff.pdf}
+  \caption{Scoring metric evaluation on datasets from four different samples. Individual data points represent different assigned variants, that are grouped based on whether they contradict expert knowledge about \gls*{db} positions. The box plots illustrate that the separation is usually relatively good, but as we can see from the data points, there are still a lot of (in theory) non-existent variants with a high score. This can partly be attributed to \gls*{db} scrambling. The lack of data in the \gls*{lip} sample is discussed in the text. (\gls*{bsa} = bovine serum albumin, \gls*{lys} = lysozyme, \gls*{lip} = lipase, \gls*{genova} = an in-silico generated ovalbumin dataset)}\label{fig:lys-at-rat-diff}
+\end{figure}
+
 \section{Dibby identifies existing disulphide bonds}
 
 A complete \gls*{db} analysis has been performed on three proteins, namely \gls*{lys}, \gls*{lip}, and \gls*{genova}\@. The analysis was initially run with vanilla settings. If there had been a strong evidence for a particular \gls*{db} in the RAT data, it was deemed to be prone to generating false positive signals. Consequently, its weight has been adjusted to 0.1, or 0.8, depending on the strength of its RAT evidence, and the analysis was run again.
@@ -54,7 +62,7 @@ As is apparent from the images, Dibby generates a lot of false positive signal. 
     \gls*{bsa} AT                                        & 13856                           & 1495                                                                   & 1717                              & 48222 &             \\
     \gls*{bsa} RAT                                       & 14242                           & 1723                                                                   & 2684                              & 22133 &             \\ \bottomrule
   \end{tabular}
-  \caption{Comparison of Dibby with MSGF+, a state-of-the-art database search tool for proteomics. MSGF+ can only identify peptides that are not cross-linked, or ``simple'' peptides; for this reason, we list the number of Dibby's simple assignments in addition to the total number of its assignments. Generally, Dibby identifies a bit more simple precursors than MSGF+, most of which are probably false positives. On the other hand, there are close to 0 false negatives. MSGF+ identified 16 times more precursors in the \gls*{lys} RAT sample than in \gls*{lip} RAT sample, and a similar effect is visible in the AT samples as well, suggesting there might be a problem in the \gls*{lip} data.}\label{tbl:measurements}
+  \caption{Comparison of Dibby with MSGF+, a state-of-the-art database search tool for proteomics. MSGF+ can only identify peptides that are not cross-linked, or ``simple'' peptides; for this reason, we list the number of Dibby's simple assignments in addition to the total number of its assignments. Generally, Dibby identifies a bit more simple precursors than MSGF+, most of which are probably false positives. On the other hand, there are close to 0 false negatives. MSGF+ identified 16 times more precursors in the \gls*{lys} RAT sample than in \gls*{lip} RAT sample, and a similar effect is visible in the AT samples as well, suggesting there might be a problem in the \gls*{lip} data. The last column specifies how many \glspl*{db} Dibby identified, and what is the total number of \glspl*{db} in the protein.}\label{tbl:measurements}
 \end{table}
 
 \begin{figure}
